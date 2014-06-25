@@ -6,8 +6,8 @@ require.config({
 		underscore: '../bower_components/underscore/underscore',
 		backbone: '../bower_components/backbone/backbone',
 		backboneLocalstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
-		bootstrap : '../bower_components/bootstrap/js/bootstrap',
 		text: '../bower_components/requirejs-text/text',
+		bootstrap: '../bower_components/bootstrap/js/bootstrap',
 		handlebars : '../bower_components/handlebars/handlebars-v1.3.0'
 	},
 	shim : {
@@ -25,7 +25,8 @@ require.config({
 			deps: ['backbone'],
 			exports: 'Store'
 		},
-		bootstrap: ['jquery']
+		
+		'bootstrap':['jquery']
 	}
 });
 
@@ -34,7 +35,7 @@ require([
 	'views/headerView',
 	'routers/routers'
 ], function (Backbone, headerView,Routers) {
-	new Routers();
-	Backbone.history.start();
-	new headerView();
+	var app = new Routers();
+	Backbone.history.start({root: ""});
+
 });

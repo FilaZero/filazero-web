@@ -1,23 +1,25 @@
-define(['backbone','views/compiled-views'],function (Backbone,CompiledViews) {
+define(['backbone','views/compiled-views','bootstrap'],function (Backbone,CompiledViews) {
 	'use strict';
 	var AppRouters = Backbone.Router.extend({
 		routes: {
-        ""                                  : "home",
-        "login"                             : "login",
-        "contact"							: "contact"
+        	""                                  : "home",
+        	"login"                             : "login",
+        	"contato"							: "contact"
         },
 
 		initialize: function () {
 			console.log("initialezing routers");
 		},
-
+		home: function(){
+			new CompiledViews.headerView();
+		},
 		login: function(){
-			console.log("initialezing login");
 			new CompiledViews.loginView();
+			$('#loginModal').modal('show');
 		},
 		contact: function(){
-			console.log("initialezing contact");
-			new CompiledViews.contactView();	
+			new CompiledViews.contactView();
+			$('#contactModal').modal('show');	
 		},
 
 	});	
