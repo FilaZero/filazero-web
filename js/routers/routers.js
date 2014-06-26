@@ -14,6 +14,7 @@ define(['backbone','views/compiled-views','bootstrap'],function (Backbone,Compil
 			$('#header').append(new CompiledViews.contactView().$el.html());
 			new CompiledViews.aboutusView();
 			new CompiledViews.junteseView();
+			new CompiledViews.footerView();
 		},
 		login: function(){
 			console.log("initialezing login");
