@@ -8,7 +8,7 @@ define(['jquery','underscore','backbone','views/compiled-templates'],function($,
 		},
 		render : function (){
 			this.$el.html(this.template({message : 'Para acessar sua conta, entre com os dados do seu cadastro.',
-									button_submit : 'Enviar',
+									button_submit : 'Entrar',
 									button_password_forget: 'Esqueci minha senha'
 									}));
 			return this;

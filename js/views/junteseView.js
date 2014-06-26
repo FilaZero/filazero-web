@@ -9,7 +9,7 @@ define(['jquery','underscore','backbone','views/compiled-templates'],function($,
 		},
 		render : function (){
 			this.$el.html(this.template({message : 'Você é empresário e quer saber mais como funciona o FilaZero?',
-									confirmation : 'Junte-se a nós clique aqui!',
+									confirmation : 'Junte-se a nós!',
 									img: '../bower_components/filazero/assets/ipad-hand.png'
 									}));
 			return this;

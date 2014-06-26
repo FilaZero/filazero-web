@@ -9,8 +9,8 @@ define(['jquery','underscore','backbone','views/compiled-templates'],function ($
 		},
 		render : function (){
 			this.$el.html(this.template({
-									title: 'Time de desenvolvimento',
-									subtitle: 'filazero',
+									title: 'Time de Desenvolvimento',
+									subtitle: 'FilaZero',
 									developer_one: 'Franco Neto',
 									describe_developer_one: 'Aluno da Universidade Federal da Paraíba, 23 anos.',
 									picture_one: '../bower_components/filazero/assets/franco.jpg',
