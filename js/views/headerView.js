@@ -25,6 +25,7 @@ define(['jquery','underscore','backbone','views/compiled-templates'],function($,
 		render: function (){
 			this.$el.html(this.template({title : 'FilaZero',
 									logar : 'Entrar',
+									home: 'Home',
 									about: 'Quem somos',
 									join: 'Junte-se',
 									contact: 'Contato',

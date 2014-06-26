@@ -12,8 +12,9 @@ define(['backbone','views/compiled-views','bootstrap'],function (Backbone,Compil
 			new CompiledViews.headerView();
 			$('#header').append(new CompiledViews.loginView().$el.html());
 			$('#header').append(new CompiledViews.contactView().$el.html());
+			new CompiledViews.homeView();
 			new CompiledViews.aboutusView();
-			new CompiledViews.junteseView();
+			new CompiledViews.joinusView();
 			new CompiledViews.footerView();
 		},
 		login: function(){
