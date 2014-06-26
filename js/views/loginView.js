@@ -1,7 +1,6 @@
-define(['jquery','underscore','backbone','handlebars','views/compiled-templates'],function($,_,Backbone,Handlebars,CompiledTemplates){
+define(['jquery','underscore','backbone','views/compiled-templates'],function($,_,Backbone,CompiledTemplates){
 	'use strict';
 	var LoginView = Backbone.View.extend({
-		el:"#content",
 		template: CompiledTemplates.LoginTemplate,
 		initialize:function() {
 			console.log('Initializing Login View'); 

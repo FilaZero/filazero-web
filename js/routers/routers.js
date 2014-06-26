@@ -3,24 +3,25 @@ define(['backbone','views/compiled-views','bootstrap'],function (Backbone,Compil
 	var AppRouters = Backbone.Router.extend({
 		routes: {
         	""                                  : "home",
-        	"login"                             : "login",
+        	"login"								: "login",
         	"contato"							: "contact"
         },
 
 		initialize: function () {
 			console.log("initialezing routers");
-		},
-		home: function(){
 			new CompiledViews.headerView();
+			$('#header').append(new CompiledViews.loginView().$el.html());
+			$('#header').append(new CompiledViews.contactView().$el.html());
+			new CompiledViews.aboutusView();
+			new CompiledViews.junteseView();
 		},
 		login: function(){
-			new CompiledViews.loginView();
+			console.log("initialezing login");
 			$('#loginModal').modal('show');
 		},
 		contact: function(){
-			new CompiledViews.contactView();
 			$('#contactModal').modal('show');	
-		},
+		}
 
 	});	
 	return AppRouters;

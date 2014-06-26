@@ -2,7 +2,7 @@
 
 require.config({
 	paths: {
-		jquery: '../bower_components/jquery/jquery-2.1.1',
+		jquery: 'http://code.jquery.com/jquery-latest.min',
 		underscore: '../bower_components/underscore/underscore',
 		backbone: '../bower_components/backbone/backbone',
 		backboneLocalstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
@@ -25,7 +25,6 @@ require.config({
 			deps: ['backbone'],
 			exports: 'Store'
 		},
-		
 		'bootstrap':['jquery']
 	}
 });
@@ -36,6 +35,6 @@ require([
 	'routers/routers'
 ], function (Backbone, headerView,Routers) {
 	var app = new Routers();
-	Backbone.history.start({root: ""});
+	Backbone.history.start({pushState: true});
 
 });

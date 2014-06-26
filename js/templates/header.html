@@ -1,3 +1,15 @@
+<script type="text/javascript">
+  $.fn.ancora = function(){
+        $('html,body').animate({scrollTop:$(this).offset().top},500);
+  }
+  $(function(){
+        $('a[href^=#]').click(function(){
+                $($(this).attr('href')).ancora();
+                return false;
+        });
+  });
+</script>
+
 <!-- Fixed navbar -->
 <div id = "headerModall" class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -9,11 +21,12 @@
       </button>
       <a class="navbar-brand" href="#"><b>{{title}}</b></a>
     </div>
-    <div class="navbar-collapse collapse">
+    <div id ='navbr' class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a  href = "#login">{{logar}}</a></li>
-        <li><a href="#">{{about}}</a></li>
-        <li><a href="#contato">{{contact}}</a></li>
+        <li><a class = 'logar' href= "">{{logar}}</a></li>
+        <li><a class = 'info' href="#quemsomos">{{about}}</a></li>
+        <li><a class = 'join' href= "#junte-se">{{join}}</a></li>
+        <li><a class = 'contato' href= "">{{contact}}</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
