@@ -10,8 +10,6 @@ define(['backbone','views/compiled-views','bootstrap'],function (Backbone,Compil
 		initialize: function () {
 			console.log("initialezing routers");
 			new CompiledViews.headerView();
-			$('#header').append(new CompiledViews.loginView().$el.html());
-			$('#header').append(new CompiledViews.contactView().$el.html());
 			new CompiledViews.homeView();
 			new CompiledViews.aboutusView();
 			new CompiledViews.joinusView();

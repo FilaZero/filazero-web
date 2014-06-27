@@ -2,7 +2,8 @@
 
 require.config({
 	paths: {
-		jquery: 'http://code.jquery.com/jquery-latest.min',
+		jquery: '../bower_components/jquery/jquery-2.1.1',
+		jqueryValidate:  '../bower_components/jquery/validator/jquery.validate',
 		underscore: '../bower_components/underscore/underscore',
 		backbone: '../bower_components/backbone/backbone',
 		backboneLocalstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
@@ -25,7 +26,8 @@ require.config({
 			deps: ['backbone'],
 			exports: 'Store'
 		},
-		'bootstrap':['jquery']
+		bootstrap:['jquery'],
+		jqueryValidate:['jquery']
 	}
 });
 
