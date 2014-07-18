@@ -1,8 +1,8 @@
-define(['jquery','underscore','backbone','views/compiled-templates'],function ($,_,Backbone,CompiledTemplates) {
+define(['handlebars','jquery','underscore','backbone','text!templates/footer.html'],function(Handlebars,$,_,Backbone,FooterTemplate) {
 	'use strict';
 	var FooterView = Backbone.View.extend({
 		el: '#footer',
-		template: CompiledTemplates.FooterTemplate,
+		template: Handlebars.compile(FooterTemplate),
 		initialize:function() {
 			console.log('Initializing Footer View'); 
 			this.render();

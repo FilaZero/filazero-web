@@ -1,8 +1,8 @@
-define(['jquery','underscore','backbone','views/compiled-templates'],function($,_,Backbone,CompiledTemplates){
+define(['handlebars','jquery','underscore','backbone','text!templates/home.html'],function(Handlebars,$,_,Backbone,HomeTemplate){
 	'use strict';
 	var HomeView = Backbone.View.extend({
 		el:"#top",
-		template: CompiledTemplates.HomeTemplate,
+		template: Handlebars.compile(HomeTemplate),
 		initialize:function() {
 			console.log('Initializing Home View'); 
 			this.render();

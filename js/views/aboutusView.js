@@ -1,8 +1,8 @@
-define(['jquery','underscore','backbone','views/compiled-templates'],function ($,_,Backbone,CompiledTemplates) {
+define(['handlebars','jquery','underscore','backbone','text!templates/aboutus.html'], function(Handlebars,$,_,Backbone,AboutusTemplate) {
 	'use strict';
 	var AboutusView = Backbone.View.extend({
 		el: '#content #below',
-		template: CompiledTemplates.AboutusTemplate,
+		template: Handlebars.compile(AboutusTemplate),
 		initialize:function() {
 			console.log('Initializing Aboutus View'); 
 			this.render();

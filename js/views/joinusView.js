@@ -1,8 +1,8 @@
-define(['jquery','underscore','backbone','views/compiled-templates'],function($,_,Backbone,CompiledTemplates){
+define(['handlebars','jquery','underscore','backbone','text!templates/joinus.html'],function(Handlebars,$,_,Backbone,JoinusTemplate){
 	'use strict';
 	var JoinusView = Backbone.View.extend({
 		el:"#middle",
-		template: CompiledTemplates.JoinusTemplate,
+		template: Handlebars.compile(JoinusTemplate),
 		initialize:function() {
 			console.log('Initializing Joinsus View'); 
 			this.render();

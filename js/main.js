@@ -33,10 +33,9 @@ require.config({
 
 require([
 	'backbone',
-	'views/headerView',
-	'routers/routers'
-], function (Backbone, headerView,Routers) {
-	var app = new Routers();
-	Backbone.history.start({pushState: true});
-
+	'views/app-filazero'
+], function (Backbone,AppView) {
+	//var app = new Routers();
+	//Backbone.history.start({pushState: true});
+	new AppView();
 });

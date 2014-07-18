@@ -1,8 +1,8 @@
-define(['jquery','underscore','backbone','views/compiled-templates','jqueryValidate'],function($,_,Backbone,CompileTemplates,jqueryValidate){
+define(['handlebars','jquery','underscore','backbone','text!templates/header.html','jqueryValidate','bootstrap'],function(Handlebars,$,_,Backbone,HeaderTemplate,jqueryValidate){
 	'use strict';
 	var HeaderView = Backbone.View.extend({
 		el: '#header',
-		template: CompileTemplates.HeaderTemplate,
+		template: Handlebars.compile(HeaderTemplate),
 		initialize:function() {
 			console.log('Initializing Header View'); 
 			this.render();
@@ -21,13 +21,14 @@ define(['jquery','underscore','backbone','views/compiled-templates','jqueryValid
 			$('#login-username').val("");
 			$('#login-password').val("");
 			//Mostrar modal
-			$('#loginModal').modal('show');
+			$('#loginModal').modal();
 			
 		},
 
 		authentic: function(event) {
 			event.preventDefault();
 			if(!$('#loginForm').valid())return;
+			open('manager.html');
 		},
 		loginFormValidate:function () {
 			$('#loginForm').validate({

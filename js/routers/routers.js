@@ -9,11 +9,7 @@ define(['backbone','views/compiled-views','bootstrap'],function (Backbone,Compil
 
 		initialize: function () {
 			console.log("initialezing routers");
-			new CompiledViews.headerView();
-			new CompiledViews.homeView();
-			new CompiledViews.aboutusView();
-			new CompiledViews.joinusView();
-			new CompiledViews.footerView();
+			
 		},
 		login: function(){
 			console.log("initialezing login");
