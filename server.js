@@ -34,9 +34,32 @@ app.get('/cliente/:id', function(req, res){
   });
 });
 
-app.post('/cliente',function(req, res){    
-    console.log(req.body)   
+app.post('/cliente',function(req, res){   
+  var query = connection.query('INSERT INTO tb_cliente (CPF, Nome, Login, Senha, Sexo, Email, Telefone) Values(?,?,?,?,?,?,?)',
+  [req.body.CPF, req.body.Nome, req.body.Login , req.body.Senha , req.body.Sexo , req.body.Email , req.body.Telefone],function(err){
+      if(err==null) {
+        res.send(200,'Cliente Adicionado'); 
+        console.log('Cliente Adicionado');
+      } 
+      else{
+        res.send(403,'Verifique os dados'); 
+      }
+
+      if (err) throw err;          
+  });      
 });
+
+app.delete('/cliente/?:id',function(req,res){
+  var query = connection.query('DELETE FROM tb_cliente WHERE CPF = ?', [req.params.id], function(err){
+      if (err) throw err;
+      if(err==null){
+        res.send(200,'Cliente Removido');
+        console.log('Cliente Removido');
+      } 
+  });
+});
+
+
 
 var server = app.listen(9999, function() {
     console.log('Listening on port %d', server.address().port);
