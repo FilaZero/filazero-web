@@ -13,7 +13,8 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.use(express.static(__dirname));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(express.cookieParser('shhhh, very secret')); 
 
 //Root
 app.get('/', function(req, res){
@@ -25,7 +26,9 @@ app.get('/cliente', getUsers);
 app.get('/cliente/:id', getUser);
 app.post('/cliente', addUser);
 app.delete('/cliente/:id',deleteUser);
-app.put('/cliente',updateUser);
+app.delete('/cliente/',deleteUsers);
+app.put('/cliente/cpf',updateUser);
+app.put('/cliente',updateUsers);
 
 //functions clientes
 function getUsers (req, res) {
@@ -77,6 +80,20 @@ function deleteUser (req,res) {
   });
 }
 
+function deleteUsers(req,res){
+  var query = connection.query('DELETE FROM tb_cliente', function(err){
+      if(!err){
+        res.send(200,'Clientes removidos');
+        console.log('Clientes removidos');
+      } 
+      else{
+        res.send(403,'Erro ao remover');
+        console.log('Erro ao remover');
+        console.log(err);
+      }
+  });
+}
+
 function updateUser (req,res) {
   var clienteTemp = req.body;
   var queryTemp = 'UPDATE tb_cliente SET '
@@ -95,8 +112,31 @@ function updateUser (req,res) {
   
   var query = connection.query(queryTemp, cpf, function(err){
     if(!err){
-      res.send(200,'Cliente Atualizado');
-      console.log('Cliente Atualizado');
+      res.send(200,'Cliente atualizado');
+      console.log('Cliente atualizado');
+    }
+    else {
+      res.send(403,'Erro ao atualizar');
+      console.log('Erro ao atualizar');
+      console.log(err);
+    }  
+  });
+}
+
+function updateUsers(req,res){
+  var clienteTemp = req.body;
+  var queryTemp = 'UPDATE tb_cliente SET '
+  var count = 0
+  for(var key in clienteTemp){
+    queryTemp+= key +' = \"' + clienteTemp[key] + '\" ,';       
+  } 
+  var temp = new String(queryTemp); 
+  queryTemp = temp.substring(0,(temp.length-1)); //retira a ultima virgula
+
+  var query = connection.query(queryTemp,function(err){
+    if(!err){
+      res.send(200,'Clientes atualizados');
+      console.log('Clientes atualizados');
     }
     else {
       res.send(403,'Erro ao atualizar');
