@@ -15,32 +15,40 @@ var app = express();
 app.use(express.static(__dirname));
 app.use(bodyParser.json())
 
-
+//Root
 app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
-app.get('/cliente', function(req, res){
+//routers clientes
+app.get('/cliente', getUsers);
+app.get('/cliente/:id', getUser);
+app.post('/cliente', addUser);
+app.delete('/cliente/:id',deleteUser);
+app.put('/cliente',updateUser);
+
+//functions clientes
+function getUsers (req, res) {
   var query = connection.query('SELECT * FROM tb_cliente', function(err, rows, fields) {
- 	  if (!err)	res.jsonp(rows);
+    if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')
       console.log(err);
     }
   });
-});
+}
 
-app.get('/cliente/:id', function(req, res){
+function getUser (req,res) {
   var query = connection.query('SELECT * FROM tb_cliente WHERE cpf = ?',[req.params.id], function(err, rows, fields) {
- 	  if (!err) res.jsonp(rows[0]);
+    if (!err) res.jsonp(rows[0]);
     else{
       res.send('Ocorreu algum erro')
       console.log(err);
     }
   });
-});
+}
 
-app.post('/cliente',function(req, res){   
+function addUser (req,res) {
   var query = connection.query('INSERT INTO tb_cliente (CPF, Nome, Login, Senha, Sexo, Email, Telefone) Values(?,?,?,?,?,?,?)',
   [req.body.CPF, req.body.Nome, req.body.Login , req.body.Senha , req.body.Sexo , req.body.Email , req.body.Telefone],function(err){
       if(!err) {
@@ -52,10 +60,10 @@ app.post('/cliente',function(req, res){
         console.log('Verifique os dados');
         console.log(err);
       }          
-  });      
-});
+  });
+}
 
-app.delete('/cliente/:id',function(req,res){
+function deleteUser (req,res) {
   var query = connection.query('DELETE FROM tb_cliente WHERE CPF = ?', [req.params.id], function(err){
       if(!err){
         res.send(200,'Cliente removido');
@@ -67,9 +75,9 @@ app.delete('/cliente/:id',function(req,res){
         console.log(err);
       }
   });
-});
+}
 
-app.put('/cliente',function(req,res){
+function updateUser (req,res) {
   var clienteTemp = req.body;
   var queryTemp = 'UPDATE tb_cliente SET '
   var count = 0
@@ -96,12 +104,7 @@ app.put('/cliente',function(req,res){
       console.log(err);
     }  
   });
-});
-
-
-
-
-
+}
 
 
 var server = app.listen(9999, function() {

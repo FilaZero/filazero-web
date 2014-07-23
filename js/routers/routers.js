@@ -8,7 +8,7 @@ define([
             'manager': 'manager'
         },
         manager : function(){
-        	new headerManagerView();	
+        	console.log("NNETOOOOOOOOOOOOOOOOOO")	
         }
     });
 
