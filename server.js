@@ -92,7 +92,7 @@ app.put('/cliente',function(req,res){
     }
     else {
       res.send(403,'Erro ao atualizar');
-      console.log('Erro ao atualizar')
+      console.log('Erro ao atualizar');
       console.log(err);
     }  
   });
