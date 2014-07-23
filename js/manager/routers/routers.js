@@ -1,14 +1,15 @@
 define([
     'jquery',
     'backbone',
-    'manager/views/headerManagerView'
-], function ($, Backbone,headerManagerView) {
+    'views/managerView'
+], function ($, Backbone,Header) {
     var Routers = Backbone.Router.extend({
         routes: {
             'manager': 'manager'
         },
         manager : function(){
-        	new headerManagerView();	
+        	console.log("Manager");
+        	new Header();	
         }
     });
 

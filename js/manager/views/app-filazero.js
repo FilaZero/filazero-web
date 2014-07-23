@@ -5,7 +5,7 @@ define(['backbone',
 		'views/joinusView',
 		'views/footerView'
 ],function (Backbone,HeaderView,HomeView,AboutusView,JoinusView,FooterView) {
-	var AppViews = Backbone.View.extend({
+	var AppView = Backbone.View.extend({
         
         initialize: function() {
 			new HeaderView();
@@ -16,5 +16,5 @@ define(['backbone',
         }
 
     });
-    return AppViews;
+    return AppView;
 });
