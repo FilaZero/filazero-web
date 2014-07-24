@@ -9,7 +9,9 @@ require.config({
 		backboneLocalstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
 		text: '../bower_components/requirejs-text/text',
 		bootstrap: '../bower_components/bootstrap/js/bootstrap',
-		handlebars : '../bower_components/handlebars/handlebars-v1.3.0'
+		handlebars : '../bower_components/handlebars/handlebars-v1.3.0',
+		cbpHorizontalSlide: '/bower_components/manager/js/cbpHorizontalSlideOutMenu.min',
+		modernizr : '/bower_components/manager/js/modernizr.custom'
 	},
 	shim : {
 		underscore: {
@@ -36,7 +38,8 @@ require([
 	'routers/routers',
 	'views/app'
 ], function (Backbone,Routers,App) {
-	new Routers();
-	Backbone.history.start({pushState: true});
 	new App();
+	new Routers();
+	Backbone.history.start();
+	
 });

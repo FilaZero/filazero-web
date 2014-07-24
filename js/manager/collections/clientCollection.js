@@ -1,7 +1,7 @@
 define([
     "underscore",
     "backbone",
-    "models/clientModel"
+    "manager/models/clientModel"
 ], function(_, Backbone, Client) {
     var ClientsCollection = Backbone.Collection.extend({
         model: Client,

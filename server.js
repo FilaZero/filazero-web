@@ -11,14 +11,16 @@ connection.connect();
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var HOST = '0.0.0.0';
+var PORT = 9999;
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
-app.use(express.cookieParser('shhhh, very secret')); 
+
 
 //Root
 app.get('/', function(req, res){
-  res.sendfile('index.html');
+  res.send('index.html');
 });
 
 //routers clientes
@@ -147,6 +149,6 @@ function updateUsers(req,res){
 }
 
 
-var server = app.listen(9999, function() {
-    console.log('Listening on port %d', server.address().port);
+var server = app.listen(PORT,HOST, function() {
+    console.log('Servidor rodando em'+HOST + ':' + PORT);
 });

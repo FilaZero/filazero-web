@@ -1,14 +1,21 @@
 define([
     'jquery',
     'backbone',
-    'manager/views/headerManagerView'
-], function ($, Backbone,headerManagerView) {
+    'manager/views/appManager'
+], function ($, Backbone,appManager) {
     var Routers = Backbone.Router.extend({
         routes: {
-            'manager': 'manager'
+            'manager': 'manager',
+            'manager/logout': 'logout'
+        },
+        initialize: function() {
+            console.log("routers criadas")
         },
         manager : function(){
-        	console.log("NNETOOOOOOOOOOOOOOOOOO")	
+            new appManager();	
+        },
+        logout: function() {
+            console.log("VINIIIIIIIII")
         }
     });
 
