@@ -1,4 +1,13 @@
-define(['handlebars','jquery','underscore','backbone','text!manager/templates/headerManager.html','manager/views/registerClientView','bootstrap','cbpHorizontalSlide','modernizr'],function(Handlebars,$,_,Backbone,HeaderManagerTemplate,registerClientView){
+define(['handlebars',
+	'jquery','underscore',
+	'backbone',
+	'text!manager/templates/headerManager.html',
+	'manager/views/registerClientView',
+	'manager/views/listClientView',
+	'bootstrap',
+	'cbpHorizontalSlide',
+	'modernizr']
+,function(Handlebars,$,_,Backbone,HeaderManagerTemplate,registerClientView,listClientView){
 	'use strict';
 	var HeaderManagerView = Backbone.View.extend({
 		el:'#header',
@@ -9,12 +18,15 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/he
 		},
 		events: {
 			'click #register-clients' : 'registerClient',
-			'click #add-client' : 'addClient'  
+			'click #add-client' : 'addClient',
+			'click #list-clients': 'listClients' 
 		},
 		registerClient : function(event){
 			new registerClientView();
 		},
-		
+		listClients: function(event) {
+			new listClientView();
+		},
 		render: function (){
 			this.$el.html(this.template);
 			return this;

@@ -1,4 +1,4 @@
-define(['handlebars','jquery','underscore','backbone','text!manager/templates/registerClient.html','jqueryValidate','collections/clientCollection','bootstrap'],function(Handlebars,$,_,Backbone,registerClientTemplate,jqueryValidate,ClientsCollection){
+define(['handlebars','jquery','underscore','backbone','text!manager/templates/registerClient.html','jqueryValidate','manager/collections/clientCollection','bootstrap'],function(Handlebars,$,_,Backbone,registerClientTemplate,jqueryValidate,ClientsCollection){
   'use strict';
   var registerClientView = Backbone.View.extend({
     el:'#content',
