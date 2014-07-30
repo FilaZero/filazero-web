@@ -42,11 +42,10 @@ app.put('/cliente',updateUsers);
 
 
 //routers doctors
-app.get('/medico', getDoctors);
-app.get('/medico/:crm' , getDoctor);
-app.get('/medico/estab/:idEstab', getDoctorsEstab);
-app.put('/medico/:crm', updateDoctor);
-app.put('/medico', updateDoctors);
+app.get('/medico/:crm', authenticateAdm, getDoctor);
+app.get('/medico', authenticateAdm, getDoctorsEstab);
+app.put('/medico/:crm', authenticateAdm, updateDoctor);
+app.put('/medico', authenticateAdm, updateDoctors);
 //app.delete('/medico', deleteDoctor);
 //add.delete('/medico/estab', deleteRelationDoctorEstab);
 //app.post('/medico', addDoctor);
@@ -60,6 +59,12 @@ app.get('/estabelecimento/:id',getEstab);
 
 // ------------------------------------------------- Login/Logout --------------------------------------------------------
 
+app.get('/teste',function(req,res){
+  res.redirect('/#home');
+});
+
+
+
 function loginAdm(req, res) {
 	var query = connection.query('SELECT * FROM tb_administrador WHERE Login = ? AND Senha = ? ', 
 			        [req.body.login, req.body.senha], function(err, rows){
@@ -69,7 +74,7 @@ function loginAdm(req, res) {
 			    		 	  req.session.idEstab = adm.FK_Estabelecimento;
 			    			  res.send(200, req.session.idEstab);
 			    			  console.log('login sucess');
-			    		  }
+              }
 			    		else{
 			    			res.send(403,'Administrador nao cadastrado');
 			    		}			    		
@@ -83,6 +88,11 @@ function logoutAdm(req, res){
     res.send(200,'logout sucess');
     console.log('logout sucess');
   }
+}
+
+function authenticateAdm(req, res, next){
+  if(req.session.idEstab) next();
+  else res.send(403,'Access denied');  
 }
 
 
@@ -110,7 +120,7 @@ function getUser (req,res) {
 
 function addUser (req,res) {
   if(typeof req.session.idEstab=='undefined'){
-    res.send(403,"Acess denid");
+    res.send(403,"Access denied");
     return;
   }
   
@@ -210,11 +220,6 @@ function updateUsers(req,res){
 
 // ------------------------------------------------- Functions Doctors --------------------------------------------------------
 function getDoctors(req, res){
-   if(typeof req.session.idEstab=='undefined'){
-    res.send(403,"Acess denid");
-    return;
-  }
-
   var query = connection.query('SELECT * FROM tb_medico', function(err, rows){
     if (!err) res.jsonp(rows);
     else{
@@ -225,11 +230,6 @@ function getDoctors(req, res){
 }
 
 function getDoctor(req, res){
-   if(typeof req.session.idEstab=='undefined'){
-    res.send(403,"Acess denid");
-    return;
-  }
- 
   var query = connection.query('SELECT * FROM tb_medico WHERE CRM = ?', req.params.crm, function(err, rows){
     if (!err) res.jsonp(rows[0]);
     else{
@@ -240,14 +240,9 @@ function getDoctor(req, res){
 }
 
 function getDoctorsEstab(req, res){
-  if(typeof req.session.idEstab=='undefined'){
-    res.send(403,"Acess denid");
-    return;
-  }
-   
   var query = connection.query('SELECT med.CRM, med.Nome, med.Descricao, med.Especialidade ' +
                                'FROM tb_medico med,tb_estabelecimento est, tb_medico_trabalha_estabelecimento mestb ' +
-                               'WHERE est.CNES= ? AND mestb.FK_Estabelecimento_Med = est.CNES AND med.CRM = mestb.FK_Medico_Estab', 
+                               'WHERE est.CNES= ? AND mestb.FK_Estabelecimento_Med = est.CNES AND med.CRM = mestb.FK_Medico_Estab ', 
                                 req.session.idEstab, function(err, rows){
                         
         	      if (!err) res.jsonp(rows);
@@ -260,11 +255,6 @@ function getDoctorsEstab(req, res){
 
 
 function updateDoctors(req, res){
-  if(typeof req.session.idEstab=='undefined'){
-    res.send(403,"Acess denid");
-    return;
-  }
- 
   var doctorTemp = req.body;
   var queryTemp = 'UPDATE tb_medico SET '
   var count = 0
@@ -288,11 +278,6 @@ function updateDoctors(req, res){
 
 function updateDoctor(req, res){
 
-  if(typeof req.session.idEstab=='undefined'){
-    res.send(403,"Acess denid");
-    return;
-  }
-  
   var doctorTemp = req.body;
   var queryTemp = 'UPDATE tb_medico SET '
   var count = 0
