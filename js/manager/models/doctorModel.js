@@ -4,7 +4,8 @@ define(['underscore','backbone'],function ( _ ,Backbone){
 		defaults: {
 			CRM : "",
 			Nome: "",
-			Descricao:""
+			Descricao:"",
+			Especialidade: ""
 		},
 		
 		initialize : function() {

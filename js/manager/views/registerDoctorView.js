@@ -12,17 +12,19 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
       this.$CRM = this.$("#CRM");
       this.$Nome = this.$("#Nome");
       this.$Descricao = this.$("#Descricao");
-      this.existCRM(this.$CRM,this.$Nome,this.$Descricao);
+      this.$Especialidade = this.$("#Especialidade");
+      this.existCRM(this.$CRM,this.$Nome,this.$Descricao,this.$Especialidade);
     },
     events: {
       'click #add-doctor' : 'addDoctor'
     },
-    existCRM:function($CRM,$Nome,$Descricao) {
+    existCRM:function($CRM,$Nome,$Descricao,$Especialidade) {
       $CRM.blur(function(){ 
         DoctorsCollection.each(function(model) {
           if(model.get("CRM") == $CRM.val()){        
             $Nome.val(model.get("Nome"));
             $Descricao.val(model.get("Descricao"));
+            $Especialidade.val(model.get("Especialidade"));
           }
         });
       });
@@ -31,7 +33,8 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
     addDoctor : function(event){
       DoctorsCollection.create({CRM: this.$CRM.val(),
                    Nome: this.$Nome.val(),
-                   Descricao: this.$Descricao.val()}); 
+                   Descricao: this.$Descricao.val(),
+                   Especialidade: this.$Especialidade.val()}); 
     },
     render: function (){
       this.$el.html(this.template);
