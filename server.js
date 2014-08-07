@@ -46,10 +46,10 @@ app.get('/medico/:crm', authenticateAdm, getDoctor);
 app.get('/medico', authenticateAdm, getDoctorsEstab);
 app.put('/medico/:crm', authenticateAdm, updateDoctor);
 app.put('/medico', authenticateAdm, updateDoctors);
-//app.delete('/medico', deleteDoctor);
-//add.delete('/medico/estab', deleteRelationDoctorEstab);
-//app.post('/medico', addDoctor);
-//app.post('/medico/estab',addRelationDoctorEstab);
+app.post('/medico',authenticateAdm, addDoctor);
+app.post('/medico/estab', authenticateAdm, addRelationDoctorEstab);
+app.delete('/medico/:CRM', authenticateAdm, deleteRelationDoctorEstab);
+
 
 
 //routers estabelishments
@@ -58,13 +58,6 @@ app.get('/estabelecimento/:id',getEstab);
 
 
 // ------------------------------------------------- Login/Logout --------------------------------------------------------
-
-app.get('/teste',function(req,res){
-  res.redirect('/#home');
-});
-
-
-
 function loginAdm(req, res) {
 	var query = connection.query('SELECT * FROM tb_administrador WHERE Login = ? AND Senha = ? ', 
 			        [req.body.login, req.body.senha], function(err, rows){
@@ -108,7 +101,6 @@ function getUsers (req, res) {
 }
 
 function getUser (req,res) {
-
   var query = connection.query('SELECT * FROM tb_cliente WHERE cpf = ?',[req.params.id], function(err, rows, fields) {
     if (!err) res.jsonp(rows[0]);
     else{
@@ -124,8 +116,8 @@ function addUser (req,res) {
     return;
   }
   
-  var query = connection.query('INSERT INTO tb_cliente (CPF, Nome, Login, Senha, Sexo, Email, Telefone) Values(?,?,?,?,?,?,?)',
-  [req.body.CPF, req.body.Nome, req.body.Login , req.body.Senha , req.body.Sexo , req.body.Email , req.body.Telefone],function(err){
+  var query = connection.query('INSERT INTO tb_cliente (CPF, Nome, Login, Senha, Sexo, Email, Telefone) Values(?,?,?,?,?)',
+  [req.body.CPF, req.body.Nome, req.body.Sexo , req.body.Email , req.body.Telefone],function(err){
       if(!err) {
         res.send(200,'Cliente adicionado'); 
         console.log('Cliente adicionado');
@@ -218,6 +210,7 @@ function updateUsers(req,res){
   });
 }
 
+
 // ------------------------------------------------- Functions Doctors --------------------------------------------------------
 function getDoctors(req, res){
   var query = connection.query('SELECT * FROM tb_medico', function(err, rows){
@@ -253,6 +246,46 @@ function getDoctorsEstab(req, res){
 	            });
 }
 
+function addDoctor(req, res){
+  var query = connection.query('INSERT INTO tb_medico (CRM, Nome,Especialidade, Descricao) VALUES(?,?,?,?)',
+                                [req.body.CRM,req.body.Nome, req.body.Descricao,req.body.Especialidade],function (err){
+              if(!err){
+                var query2 = connection.query('INSERT INTO tb_medico_trabalha_estabelecimento(FK_Medico_Estab,FK_Estabelecimento_Med) VALUES(?,?)',
+                                              [req.body.CRM, req.session.idEstab], function(erro){
+                                                  if(!erro) res.send(200,"Medico adicionado");
+                                                  else {
+                                                    res.send(403,"Ocorreu algum erro, Verifique o log");
+                                                    console.log(erro);
+                                                  }
+                                              });                            
+              }
+              else{
+                res.send(403,'Ocorreu algum erro ao adicionar o medico');
+                console.log(err);
+              }
+  });
+}
+
+function addRelationDoctorEstab(req,res){
+    var query = connection.query('INSERT INTO tb_medico_trabalha_estabelecimento(FK_Medico_Estab,FK_Estabelecimento_Med) VALUES(?,?)',
+                                  [req.body.CRM, req.session.idEstab], function(err){
+                                    if(!err) res.send(200,'Relacao adicionada');               
+                                    else res.send(403,'Ocorreu algum erro');
+                                  });
+}
+
+function deleteRelationDoctorEstab(req,res){
+  var query = connection.query('DELETE FROM tb_medico_trabalha_estabelecimento WHERE FK_Medico_Estab = ? AND FK_Estabelecimento_Med = ?',
+                                [req.params.CRM, req.session.idEstab], function(err){
+                                  if(!err) res.send(200,'Medico deletado');
+                                  else{ 
+                                    res.send(403,'Ocorreu algum erro, verifiqueo log');
+                                    console.log(err);
+                                  }
+
+                              });
+}
+
 
 function updateDoctors(req, res){
   var doctorTemp = req.body;
@@ -277,7 +310,6 @@ function updateDoctors(req, res){
 }
 
 function updateDoctor(req, res){
-
   var doctorTemp = req.body;
   var queryTemp = 'UPDATE tb_medico SET '
   var count = 0
