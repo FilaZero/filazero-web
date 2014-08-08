@@ -423,6 +423,7 @@ function deleteRelationPatientEstab(req, res){
 
 function updatePatient (req,res) {
   var clienteTemp = req.body;
+  console.log(clienteTemp);
   var queryTemp = 'UPDATE tb_cliente SET '
   var count = 0
   for(var key in clienteTemp){

@@ -4,12 +4,9 @@ define(['underscore','backbone'],function ( _ ,Backbone){
 		defaults: {
 			CPF : "",
 			Nome: "",
-			Login:"",
-			Senha:"",
 			Sexo:"",
 			Email:"",
-			Telefone:"(00)0000-0000",
-			permissao: "Negada"
+			Telefone:"(00)0000-0000"
 		},
 		
 		initialize : function() {
