@@ -422,8 +422,19 @@ function deleteRelationPatientEstab(req, res){
 }
 
 function updatePatient (req,res) {
-  var clienteTemp = req.body;
-  console.log(clienteTemp);
+  var query = connection.query('UPDATE  tb_cliente SET  Nome=?, Sexo=?, Email=?, Telefone=? where CPF = ?',
+  [ req.body.Nome, req.body.Sexo , req.body.Email , req.body.Telefone,req.body.CPF],function(err){
+      if(!err) {
+        res.send(200,'Cliente atualizado');
+        console.log('Cliente atualizado');
+      } 
+      else{
+        res.send(403,'Erro ao atualizar');
+        console.log('Erro ao atualizar');
+        console.log(err);
+      }          
+  });
+  /*
   var queryTemp = 'UPDATE tb_cliente SET '
   var count = 0
   for(var key in clienteTemp){
@@ -432,7 +443,6 @@ function updatePatient (req,res) {
     }
     count++;
   } 
-
   var temp = new String(queryTemp); 
   queryTemp = temp.substring(0,(temp.length-1)); //retira a ultima virgula
   queryTemp+= ' WHERE CPF = ?';
@@ -448,7 +458,7 @@ function updatePatient (req,res) {
       console.log('Erro ao atualizar');
       console.log(err);
     }  
-  });
+  });*/
 }
 
 
