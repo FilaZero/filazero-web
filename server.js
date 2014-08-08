@@ -53,11 +53,10 @@ app.delete('/manager/medico/:crm', authenticateAdm, deleteRelationDoctorEstab);
 
 //routes manager paciente 
 app.get('/manager/paciente',authenticateAdm, getPatients);
-app.get('/manager/paciente/:id', authenticateAdm,getPatient);
+app.get('/manager/paciente/:cpf', authenticateAdm,getPatient);
 app.put('/manager/paciente/:id', authenticateAdm, updatePatient);
 app.post('/manager/paciente', authenticateAdm, addPatient);
-app.post('/manager/paciente/relation',authenticateAdm, addRelationPatientEstab);
-app.delete('/manager/paciente/:id', authenticateAdm, deleteRelationPatientEstab);
+app.delete('/manager/paciente/:cpf', authenticateAdm, deleteRelationPatientEstab);
 
 
 //routers adm estabelishments
@@ -370,23 +369,23 @@ function getPatient(req, res){
 }
 
 function addPatient(req, res){
-  var query = connection.query('INSERT INTO tb_cliente(CPF,Nome,Sexo,Email,Telefone) VALUES(?,?,?,?,?)',
-              [req.body.CPF, req.body.Nome, req.body.Sexo, req.body.Email, req.body.Telefone], function(err){
-               if(!err){
-                  var query2=connection.query('INSERT INTO tb_client_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
-                  [req.body.CPF, req.session.idEstab], function(erro){
-                    if(!erro) res.send(200,'Cliente adicionado');
-                    else {
-                      res.send(403,'Erro ao adicionar, Verifique o log');
-                      console.log(erro);
-                    }
-                  });
-                }
-                else{
-                  res.send(403,'Erro ao adicionar, verifique o log');
-                  console.log(err);
-                }
-             });
+  var check = connection.query('SELECT * FROM tb_cliente WHERE CPF = ?', req.body.CPF, function(err, rows){
+    var patient = rows[0];
+
+    if(patient==null){
+      var query = connection.query('INSERT INTO tb_cliente(CPF,Nome,Sexo,Email,Telefone) VALUES(?,?,?,?,?)',
+                [req.body.CPF, req.body.Nome, req.body.Sexo, req.body.Email, req.body.Telefone], function(err){
+                  if(!err){
+                    addRelationPatientEstab(req,res);
+                  }
+                  else{
+                    res.send(403,'Erro ao adicionar, verifique o log');
+                    console.log(err);
+                  }
+               });
+    }
+    else addRelationPatientEstab(req,res);
+  }); 
 }
 
 function addRelationPatientEstab(req,res){
@@ -402,7 +401,7 @@ function addRelationPatientEstab(req,res){
 
 function deleteRelationPatientEstab(req, res){
   var query = connection.query('DELETE FROM tb_client_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
-              [req.params.id, req.session.idEstab], function(err){
+              [req.params.cpf, req.session.idEstab], function(err){
                 if(!err) res.send(200,'Cliente removido');
                 else{
                   res.send(403,'Ocorreu algum erro, Verifique o log');
