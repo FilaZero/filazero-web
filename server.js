@@ -85,14 +85,19 @@ function loginAdm(req, res) {
 function logoutAdm(req, res){
   if(typeof req.session.idEstab!='undefined'){
     req.session.destroy();
-    res.send(200,'logout sucess');
+    res.redirect('/');
+    //res.send(200,'logout sucess');
     console.log('logout sucess');
   }
 }
 
 function authenticateAdm(req, res, next){
   if(req.session.idEstab) next();
-  else res.send(403,'Access denied');  
+  else{
+    res.redirect('/');
+    console.log('Access denied');
+    //res.send(403,'Access denied'); 
+  } 
 }
 
 function manager(req,res){
