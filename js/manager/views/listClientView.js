@@ -36,9 +36,9 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     },
     updateConfirm:function(e){
       var modelUpdate = ClientsCollection.get(e.currentTarget.attributes[4].value);
-      modelUpdate.set({CPF: this.$CPF.val(), Nome: this.$Nome.val(), Sexo: this.$Sexo.val(), Email: this.$Email.val(), Telefone: this.$Telefone.val() });
-      this.$("#edit").modal("hide");
-      this.render();
+      console.log(modelUpdate);
+      modelUpdate.set({id:this.$CPF.val(),CPF: this.$CPF.val(), Nome: this.$Nome.val(), Sexo: this.$Sexo.val(), Email: this.$Email.val(), Telefone: this.$Telefone.val(),Permissao:"Negada"});
+      modelUpdate.save({},{url:'manager/paciente/'+ modelUpdate.get('id')});
     },
     modalDelete:function(e){
       this.$("#delete").modal();
