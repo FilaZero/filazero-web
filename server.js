@@ -37,7 +37,7 @@ app.get('/admin',authenticateAdm,admin);
 //routers clientes
 app.get('/paciente', getUsers);
 app.get('/paciente/:id', getUser);
-app.post('/consulta', newAppointment)
+app.post('/consulta', newAppointment);
 app.post('/paciente', addUser);
 app.delete('/paciente/:id',deleteUser);
 app.delete('/paciente/',deleteUsers);
@@ -75,11 +75,11 @@ function loginAdm(req, res) {
 			    		  if(rows!=null){
 			    			  var adm = rows[0];
 			    		 	  req.session.idEstab = adm.FK_Estabelecimento;
-			    			  res.send(200, req.session.idEstab);
 			    			  console.log('login sucess');
+                  res.status(202).send(req.session.idEstab);
               }
 			    		else{
-			    			res.send(403,'Administrador nao cadastrado');
+			    			res.status(403).end();
 			    		}			    		
 			    	}
 			    });

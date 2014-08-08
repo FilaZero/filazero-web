@@ -27,8 +27,26 @@ define(['handlebars','jquery','underscore','backbone','text!templates/header.htm
 
 		authentic: function(event) {
 			event.preventDefault();
+			console.log();
 			if(!$('#loginForm').valid())return;
-			open('manager.html');
+			$.ajax({
+				url:"login/adm",
+				type:"POST",
+  				data: JSON.stringify({
+					login:$('#login-username').val(),
+					senha:$('#login-password').val()
+ 				}),
+ 				contentType:"application/json",
+ 				dataType:"json",
+ 				success: function(data){
+ 					console.log(data);
+ 					console.log("ENTROU!");
+    			},
+    			error: function(data) {
+               		console.log(data);
+ 					console.log("ERRO!");
+            }
+    		});
 		},
 		loginFormValidate:function () {
 			$('#loginForm').validate({
