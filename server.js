@@ -31,6 +31,9 @@ app.get('/', function(req, res){
 app.post('/login/adm', loginAdm);
 app.get('/logout/adm',logoutAdm);
 
+//admin
+app.get('/admin',authenticateAdm,admin);
+
 //routers clientes
 app.get('/paciente', getUsers);
 app.get('/paciente/:id', getUser);
@@ -85,18 +88,27 @@ function loginAdm(req, res) {
 function logoutAdm(req, res){
   if(typeof req.session.idEstab!='undefined'){
     req.session.destroy();
-    res.send(200,'logout sucess');
+    res.redirect('/');
+    //res.send(200,'logout sucess');
     console.log('logout sucess');
   }
 }
 
 function authenticateAdm(req, res, next){
   if(req.session.idEstab) next();
-  else res.send(403,'Access denied');  
+  else{
+    res.redirect('/');
+    console.log('Access denied');
+    //res.send(403,'Access denied'); 
+  } 
 }
 
 function manager(req,res){
   res.redirect('/#manager');
+}
+
+function admin(req,res){
+  res.redirect('/#admin');
 }
 
 // ------------------------------------------------- Function Users --------------------------------------------------------
