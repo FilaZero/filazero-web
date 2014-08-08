@@ -5,7 +5,7 @@ define([
 ], function(_, Backbone, Doctor) {
     var DoctorsCollection = Backbone.Collection.extend({
         model: Doctor,
-        url: "medico" // url of the REST API
+        url: "manager/medico" // url of the REST API
     });
     return new DoctorsCollection();
 });

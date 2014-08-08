@@ -389,14 +389,20 @@ function addPatient(req, res){
 }
 
 function addRelationPatientEstab(req,res){
-  var query=connection.query('INSERT INTO tb_client_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
+  var check = connection.query('SELECT * FROM tb_client_cad_estab FK_Cliente=? AND FK_Estabelecimento=?',
+    [req.params.CPF, req.session.idEstab], function(err, rows){
+      var cad = rows[0];
+      if(cad==null){
+        var query=connection.query('INSERT INTO tb_client_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
                   [req.body.CPF, req.session.idEstab], function(erro){
                     if(!erro) res.send(200,'Cliente adicionado');
                     else {
                       res.send(403,'Erro ao adicionar, Verifique o log');
                       console.log(erro);
                     }
-            });
+        });
+      }
+  }); 
 }
 
 function deleteRelationPatientEstab(req, res){
