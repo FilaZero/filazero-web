@@ -31,6 +31,9 @@ app.get('/', function(req, res){
 app.post('/login/adm', loginAdm);
 app.get('/logout/adm',logoutAdm);
 
+//admin
+app.get('/admin',authenticateAdm,admin);
+
 //routers clientes
 app.get('/paciente', getUsers);
 app.get('/paciente/:id', getUser);
@@ -102,6 +105,10 @@ function authenticateAdm(req, res, next){
 
 function manager(req,res){
   res.redirect('/#manager');
+}
+
+function admin(req,res){
+  res.redirect('/#admin');
 }
 
 // ------------------------------------------------- Function Users --------------------------------------------------------
