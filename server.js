@@ -53,11 +53,11 @@ app.delete('/manager/medico/:crm', authenticateAdm, deleteRelationDoctorEstab);
 
 //routes manager paciente 
 app.get('/manager/paciente',authenticateAdm, getPatients);
-app.get('/manager/paciente/:cpf', authenticateAdm,getPatient);
+app.get('/manager/paciente/:id', authenticateAdm,getPatient);
 app.put('/manager/paciente/:id', authenticateAdm, updatePatient);
 app.post('/manager/paciente', authenticateAdm, addPatient);
 app.post('/manager/paciente/relation',authenticateAdm, addRelationPatientEstab);
-app.delete('/manager/paciente/:cpf', authenticateAdm, deleteRelationPatientEstab);
+app.delete('/manager/paciente/:id', authenticateAdm, deleteRelationPatientEstab);
 
 
 //routers adm estabelishments
@@ -402,7 +402,7 @@ function addRelationPatientEstab(req,res){
 
 function deleteRelationPatientEstab(req, res){
   var query = connection.query('DELETE FROM tb_client_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
-              [req.params.cpf, req.session.idEstab], function(err){
+              [req.params.id, req.session.idEstab], function(err){
                 if(!err) res.send(200,'Cliente removido');
                 else{
                   res.send(403,'Ocorreu algum erro, Verifique o log');

@@ -4,7 +4,6 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
     el:'#content',
     template: Handlebars.compile(registerClientTemplate),
     initialize:function() {
-      ClientsCollection.fetch();
       console.log('Initializing RegisterClient View'); 
       this.render();
 
@@ -38,6 +37,12 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
                    Sexo: this.$Sexo.val(),
                    Email: this.$Email.val(),
                    Telefone: this.$Telefone.val()}); 
+      this.$("#modal-delete").modal();
+      this.$CPF.val("");
+      this.$Nome.val("");
+      this.$Sexo.val("");
+      this.$Email.val("");
+      this.$Telefone.val("");
     },
     render: function (){
       this.$el.html(this.template);
