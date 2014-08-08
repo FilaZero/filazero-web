@@ -50,6 +50,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       var modelDelete = ClientsCollection.get(idForDelete);
       modelDelete.set({id: modelDelete.get("CPF")});
       modelDelete.destroy();
+      this.$("#delete").modal("hide");
     },
     setClients:function($tbody){
         ClientsCollection.each(function(model) {
