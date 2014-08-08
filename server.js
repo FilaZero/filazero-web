@@ -32,29 +32,37 @@ app.post('/login/adm', loginAdm);
 app.get('/logout/adm',logoutAdm);
 
 //routers clientes
-app.get('/cliente', getUsers);
-app.get('/cliente/:id', getUser);
-app.post('/cliente', addUser);
-app.delete('/cliente/:id',deleteUser);
-app.delete('/cliente/',deleteUsers);
-app.put('/cliente/cpf',updateUser);
-app.put('/cliente',updateUsers);
+app.get('/paciente', getUsers);
+app.get('/paciente/:id', getUser);
+app.post('/paciente', addUser);
+app.delete('/paciente/:id',deleteUser);
+app.delete('/paciente/',deleteUsers);
+app.put('/paciente/cpf',updateUser);
+app.put('/paciente',updateUsers);
 
 
-//routers doctors
-app.get('/medico/:crm', authenticateAdm, getDoctor);
-app.get('/medico', authenticateAdm, getDoctorsEstab);
-app.put('/medico/:crm', authenticateAdm, updateDoctor);
-app.put('/medico', authenticateAdm, updateDoctors);
-app.post('/medico',authenticateAdm, addDoctor);
-app.post('/medico/estab', authenticateAdm, addRelationDoctorEstab);
-app.delete('/medico/:CRM', authenticateAdm, deleteRelationDoctorEstab);
+//routers manager doctors
+app.get('/manager',authenticateAdm,manager);
+app.get('/manager/medico/:crm', authenticateAdm, getDoctor);
+app.get('/manager/medico', authenticateAdm, getDoctorsEstab);
+app.put('/manager/medico/:crm', authenticateAdm, updateDoctor);
+app.put('/manager/medico', authenticateAdm, updateDoctors);
+app.post('/manager/medico',authenticateAdm, addDoctor);
+app.post('/manager/medico/relation', authenticateAdm, addRelationDoctorEstab);
+app.delete('/manager/medico/:crm', authenticateAdm, deleteRelationDoctorEstab);
+
+//routes manager paciente 
+app.get('/manager/paciente',authenticateAdm, getPatients);
+app.get('/manager/paciente/:cpf', authenticateAdm,getPatient);
+app.put('/manager/paciente/:id', authenticateAdm, updatePatient);
+app.post('/manager/paciente', authenticateAdm, addPatient);
+app.post('/manager/paciente/relation',authenticateAdm, addRelationPatientEstab);
+app.delete('/manager/paciente/:cpf', authenticateAdm, deleteRelationPatientEstab);
 
 
-
-//routers estabelishments
-app.get('/estabelecimento', getEstabs);
-app.get('/estabelecimento/:id',getEstab);
+//routers adm estabelishments
+app.get('/adm/estabelecimento', getEstabs);
+app.get('/adm/estabelecimento/:id',getEstab);
 
 
 // ------------------------------------------------- Login/Logout --------------------------------------------------------
@@ -88,6 +96,9 @@ function authenticateAdm(req, res, next){
   else res.send(403,'Access denied');  
 }
 
+function manager(req,res){
+  res.redirect('/#manager');
+}
 
 // ------------------------------------------------- Function Users --------------------------------------------------------
 function getUsers (req, res) {
@@ -210,7 +221,6 @@ function updateUsers(req,res){
   });
 }
 
-
 // ------------------------------------------------- Functions Doctors --------------------------------------------------------
 function getDoctors(req, res){
   var query = connection.query('SELECT * FROM tb_medico', function(err, rows){
@@ -276,16 +286,14 @@ function addRelationDoctorEstab(req,res){
 
 function deleteRelationDoctorEstab(req,res){
   var query = connection.query('DELETE FROM tb_medico_trabalha_estabelecimento WHERE FK_Medico_Estab = ? AND FK_Estabelecimento_Med = ?',
-                                [req.params.CRM, req.session.idEstab], function(err){
+                                [req.params.crm, req.session.idEstab], function(err){
                                   if(!err) res.send(200,'Medico deletado');
                                   else{ 
                                     res.send(403,'Ocorreu algum erro, verifiqueo log');
                                     console.log(err);
                                   }
-
                               });
 }
-
 
 function updateDoctors(req, res){
   var doctorTemp = req.body;
@@ -329,6 +337,104 @@ function updateDoctor(req, res){
     }else {
       res.send(403,'Erro ao atualizar medico');
       console.log('Erro ao atualizar medico');
+      console.log(err);
+    }  
+  });
+}
+
+// ------------------------------------------------- Functions Pacientes Estab --------------------------------------------------------
+function getPatients(req, res){
+  var query = connection.query('SELECT cli.CPF, cli.Nome, cli.Sexo, cli.Email, cli.Telefone '+
+                               'FROM tb_cliente cli, tb_estabelecimento est, tb_client_cad_estab cad '+
+                               'WHERE est.CNES = ? AND cad.FK_Cliente=cli.CPF AND cad.FK_Estabelecimento=est.CNES',
+                                req.session.idEstab, function(err, rows) {
+    if (!err) res.jsonp(rows);
+    else{
+      res.send('Ocorreu algum erro')
+      console.log(err);
+    }
+  });
+}
+
+function getPatient(req, res){
+  var query = connection.query('SELECT cli.CPF, cli.Nome, cli.Sexo, cli.Email, cli.Telefone '+
+                               'FROM tb_cliente cli, tb_estabelecimento est, tb_client_cad_estab cad '+
+                               'WHERE cli.CPF =? AND est.CNES = ? AND cad.FK_Cliente=cli.CPF AND cad.FK_Estabelecimento = est.CNES',
+                                [req.params.cpf, req.session.idEstab], function(err, rows) {
+    if (!err) res.jsonp(rows[0]);
+    else{
+      res.send('Ocorreu algum erro')
+      console.log(err);
+    }
+  });
+}
+
+function addPatient(req, res){
+  var query = connection.query('INSERT INTO tb_cliente(CPF,Nome,Sexo,Email,Telefone) VALUES(?,?,?,?,?)',
+              [req.body.CPF, req.body.Nome, req.body.Sexo, req.body.Email, req.body.Telefone], function(err){
+               if(!err){
+                  var query2=connection.query('INSERT INTO tb_client_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
+                  [req.body.CPF, req.session.idEstab], function(erro){
+                    if(!erro) res.send(200,'Cliente adicionado');
+                    else {
+                      res.send(403,'Erro ao adicionar, Verifique o log');
+                      console.log(erro);
+                    }
+                  });
+                }
+                else{
+                  res.send(403,'Erro ao adicionar, verifique o log');
+                  console.log(err);
+                }
+             });
+}
+
+function addRelationPatientEstab(req,res){
+  var query=connection.query('INSERT INTO tb_client_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
+                  [req.body.CPF, req.session.idEstab], function(erro){
+                    if(!erro) res.send(200,'Cliente adicionado');
+                    else {
+                      res.send(403,'Erro ao adicionar, Verifique o log');
+                      console.log(erro);
+                    }
+            });
+}
+
+function deleteRelationPatientEstab(req, res){
+  var query = connection.query('DELETE FROM tb_client_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
+              [req.params.cpf, req.session.idEstab], function(err){
+                if(!err) res.send(200,'Cliente removido');
+                else{
+                  res.send(403,'Ocorreu algum erro, Verifique o log');
+                  console.log(err);
+                }
+              });
+}
+
+function updatePatient (req,res) {
+  var clienteTemp = req.body;
+  var queryTemp = 'UPDATE tb_cliente SET '
+  var count = 0
+  for(var key in clienteTemp){
+    if(count>0){
+      queryTemp+= key +' = \"' + clienteTemp[key] + '\" ,';       
+    }
+    count++;
+  } 
+
+  var temp = new String(queryTemp); 
+  queryTemp = temp.substring(0,(temp.length-1)); //retira a ultima virgula
+  queryTemp+= ' WHERE CPF = ?';
+  var cpf = clienteTemp.CPF;
+  
+  var query = connection.query(queryTemp, cpf, function(err){
+    if(!err){
+      res.send(200,'Cliente atualizado');
+      console.log('Cliente atualizado');
+    }
+    else {
+      res.send(403,'Erro ao atualizar');
+      console.log('Erro ao atualizar');
       console.log(err);
     }  
   });
