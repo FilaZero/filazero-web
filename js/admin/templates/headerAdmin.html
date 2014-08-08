@@ -1,0 +1,26 @@
+<div class="container">
+      <header class="clearfix">
+        <span>Admin<span class="bp-icon bp-icon-about" data-content="Página de administração exclusiva dos proprietários do aplicativo."></span></span>
+        <h1>FilaZero</h1>
+      </header> 
+      <div class="main centered">
+        <nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+          <div class="cbp-hsinner">
+            <ul class="cbp-hsmenu">
+              <li>
+                <a href="#manager"> Estabelecimentos </a>
+                <ul class="cbp-hssubmenu">
+                  <li><a id = "register-estabs" href="#admin/cadastro/estab"><img src="bower_components/manager/images/plus.png" alt="img01"/><span>Cadastrar novo estabelecimento</span></a></li>
+                  <li><a id = "list-estabs" href="#admin/lista/estab"><img src="bower_components/manager/images/menu.png" alt="img02"/><span>Listar estabelecimentos</span></a></li>
+                </ul>
+              </li>
+              
+              <li><a href="http://localhost:9999">Sair</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <script>
+      var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper'));
+    </script>
