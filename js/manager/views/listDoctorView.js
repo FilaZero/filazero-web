@@ -4,13 +4,37 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     el:'#content',
     template: Handlebars.compile(listDoctorTemplate),
     initialize:function() {
-      DoctorsCollection.fetch();
-      console.log('Initializing ListDoctor View'); 
       this.render();
+      DoctorsCollection.fetch();
+      console.log('Initializing ListDoctor View');      
 
       //Dom
       this.$tbody = this.$('#mytable #tbody');
       this.setDoctors(this.$tbody);
+    },
+    events: {
+      'click #btn-delete': 'modalDelete',
+      'click #btn-confirm': 'deleteConfirm'
+    },
+    modalDelete:function(e){
+      this.$("#delete").modal();
+      this.$("#btn-confirm").attr('doctorId',e.currentTarget.attributes[1].value); 
+    },
+    deleteConfirm:function(e) {
+      e.preventDefault();
+      var idForDelete =  this.$("#btn-confirm").attr('doctorId');
+      var modelDelete = DoctorsCollection.get(idForDelete);
+      modelDelete.set({id: modelDelete.get("CRM")});
+      console.log(modelDelete.get("id"));
+      modelDelete.destroy({
+        success: function(model, response) {
+          console.log("Sucess");
+        },
+        error: function(model, response) {
+          console.log("Erro");
+        }
+      });
+      this.$("#delete").modal("hide");
     },
     setDoctors:function($tbody){
         DoctorsCollection.each(function(model) {

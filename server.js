@@ -44,20 +44,19 @@ app.put('/paciente',updateUsers);
 
 //routers manager doctors
 app.get('/manager',authenticateAdm,manager);
-app.get('/manager/medico/:crm', authenticateAdm, getDoctor);
+app.get('/manager/medico/:id', authenticateAdm, getDoctor);
 app.get('/manager/medico', authenticateAdm, getDoctorsEstab);
-app.put('/manager/medico/:crm', authenticateAdm, updateDoctor);
+app.put('/manager/medico/:id', authenticateAdm, updateDoctor);
 app.put('/manager/medico', authenticateAdm, updateDoctors);
 app.post('/manager/medico',authenticateAdm, addDoctor);
-app.post('/manager/medico/relation', authenticateAdm, addRelationDoctorEstab);
-app.delete('/manager/medico/:crm', authenticateAdm, deleteRelationDoctorEstab);
+app.delete('/manager/medico/:id', authenticateAdm, deleteRelationDoctorEstab);
 
 //routes manager paciente 
 app.get('/manager/paciente',authenticateAdm, getPatients);
-app.get('/manager/paciente/:cpf', authenticateAdm,getPatient);
+app.get('/manager/paciente/:id', authenticateAdm,getPatient);
 app.put('/manager/paciente/:id', authenticateAdm, updatePatient);
 app.post('/manager/paciente', authenticateAdm, addPatient);
-app.delete('/manager/paciente/:cpf', authenticateAdm, deleteRelationPatientEstab);
+app.delete('/manager/paciente/:id', authenticateAdm, deleteRelationPatientEstab);
 
 
 //routers adm estabelishments
@@ -260,21 +259,12 @@ function addDoctor(req, res){
   var query1 = connection.query('SELECT * FROM tb_medico WHERE CRM = ?', req.body.CRM, function(exists, rows) {
   var debug = rows[0];
   if (debug != null) {
-                  addRelationDoctorEstab(req, res);
+	addRelationDoctorEstab(req, res);
   }
   else {
     var query = connection.query('INSERT INTO tb_medico (CRM, Nome,Especialidade, Descricao) VALUES(?,?,?,?)',
                                   [req.body.CRM,req.body.Nome, req.body.Descricao,req.body.Especialidade],function (err){
-                if(!err){
-                  var query2 = connection.query('INSERT INTO tb_medico_trabalha_estabelecimento(FK_Medico_Estab,FK_Estabelecimento_Med) VALUES(?,?)',
-                                                [req.body.CRM, req.session.idEstab], function(erro){
-                                                    if(!erro) res.send(200,"Medico adicionado");
-                                                    else {
-                                                      res.send(403,"Ocorreu algum erro, Verifique o log");
-                                                      console.log(erro);
-                                                    }
-                                                });                            
-                }
+                if(!err) addRelationDoctorEstab(req, res);                                 
                 else{
                   res.send(403,'Ocorreu algum erro ao adicionar o medico');
                   console.log(err); 
@@ -286,18 +276,15 @@ function addDoctor(req, res){
 
 function addRelationDoctorEstab(req,res){
   var query1 = connection.query('SELECT * FROM tb_medico_trabalha_estabelecimento WHERE FK_Medico_Estab = ? AND FK_Estabelecimento_Med', [req.body.CRM, req.session.idEstab], function(exists, rows) {
-  var debug = rows[0];
-  if (debug == null) {
+  	var debug = rows[0];
+  	if (debug == null) {
        var query = connection.query('INSERT INTO tb_medico_trabalha_estabelecimento(FK_Medico_Estab,FK_Estabelecimento_Med) VALUES(?,?)',
                                     [req.body.CRM, req.session.idEstab], function(err){
                                       if(!err) res.send(200,'Relacao adicionada');               
                                       else res.send(403,'Ocorreu algum erro');
                                     });
-
-  }
-  else {
-    res.send(403, "Já existe relação entre o médico e o estabelecimento");
-  }
+  	}
+  	else res.send(403, "Já existe relação entre o médico e o estabelecimento");  
   });
 }
 
@@ -407,7 +394,7 @@ function addPatient(req, res){
 }
 
 function addRelationPatientEstab(req,res){
-  var check = connection.query('SELECT * FROM tb_client_cad_estab FK_Cliente=? AND FK_Estabelecimento=?',
+  var check = connection.query('SELECT * FROM tb_client_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
     [req.params.CPF, req.session.idEstab], function(err, rows){
       var cad = rows[0];
       if(cad==null){
