@@ -38,14 +38,16 @@ define(['handlebars','jquery','underscore','backbone','text!templates/header.htm
  				}),
  				contentType:"application/json",
  				dataType:"json",
- 				success: function(data){
- 					console.log(data);
- 					console.log("ENTROU!");
-    			},
-    			error: function(data) {
-               		console.log(data);
- 					console.log("ERRO!");
-            }
+ 				statusCode: {
+    				202: function(dado) {
+    					window.location.replace("/manager")
+      					//console.log(dado)
+    				},
+    				403: function(dado) {
+    					alert("Login inválido. Tente novamente!"),
+    					//console.log(dado)
+    				}	
+  				}
     		});
 		},
 		loginFormValidate:function () {

@@ -71,15 +71,17 @@ app.get('/adm/estabelecimento/:id',getEstab);
 function loginAdm(req, res) {
 	var query = connection.query('SELECT * FROM tb_administrador WHERE Login = ? AND Senha = ? ', 
 			        [req.body.login, req.body.senha], function(err, rows){
-			    	  if(!err){
-			    		  if(rows!=null){
-			    			  var adm = rows[0];
-			    		 	  req.session.idEstab = adm.FK_Estabelecimento;
-			    			  console.log('login sucess');
-                  res.status(202).send(req.session.idEstab);
-              }
+			    	if(!err){
+			    		console.log(rows);
+			    		if(rows[0] != null){
+			    			var adm = rows[0];
+			    		 	req.session.idEstab = adm.FK_Estabelecimento;
+			    			console.log('login sucess');
+                  			//caso falhe, remover '.send(202)'
+                  			res.status(202).send(202).send(req.session.idEstab);
+              			}
 			    		else{
-			    			res.status(403).end();
+			    			res.status(403).send(403);
 			    		}			    		
 			    	}
 			    });
