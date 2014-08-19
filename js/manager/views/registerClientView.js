@@ -31,7 +31,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
       });
       
     },
-    addClient : function(event){
+    addClient: function(e){
       ClientsCollection.create({CPF: this.$CPF.val(),
                    Nome: this.$Nome.val(),
                    Sexo: this.$Sexo.val(),

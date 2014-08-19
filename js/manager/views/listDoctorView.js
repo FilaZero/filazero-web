@@ -18,24 +18,24 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     events: {
       'click #btn-delete-doctor': 'modalDelete',
       'click #btn-confirm-doctor': 'deleteConfirm',
-      'click #btn-edit': 'edit',
-      'click #btn-update': 'updateConfirm',
+      'click #btn-edit-doctor': 'edit',
+      'click #btn-update-doctor': 'updateConfirm',
     },
     edit:function(e){
-      this.$("#edit").modal();
+      this.$("#edit-doctor").modal();
       var model = DoctorsCollection.get(e.currentTarget.attributes[2].value);
       console.log(model.get("CRM"));
       this.$CRM.val(model.get("CRM"));
       this.$Nome.val(model.get("Nome"));
       this.$Descricao.val(model.get("Descricao"));
       this.$Especialidade.val(model.get("Especialidade"));
-      this.$('#btn-update').attr('crmMedico',e.currentTarget.attributes[2].value);
+      this.$('#btn-update-doctor').attr('crmMedico',e.currentTarget.attributes[2].value);
     },
     updateConfirm:function(e){
       var modelUpdate = DoctorsCollection.get(e.currentTarget.attributes[4].value);
       modelUpdate.set({id: this.$CRM.val(),CRM: this.$CRM.val(), Nome: this.$Nome.val(), Descricao: this.$Descricao.val(), Especialidade: this.$Especialidade.val()});
       modelUpdate.save({},{url:'manager/medico/'+ modelUpdate.get('id')});
-      this.$("#edit").modal("hide");
+      this.$("#edit-doctor").modal("hide");
       
     },
     modalDelete:function(e){
@@ -56,7 +56,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
           $tbody.append('<td>'+model.get("Nome")+ '</td>');
           $tbody.append('<td>'+model.get("Especialidade")+ '</td>');
           $tbody.append('<td>'+model.get("Descricao")+ '</td>');
-          $tbody.append('<td><p><button id ="btn-edit"  class="btn btn-primary btn-xs" idDoctor='+model.cid+' data-title="Edit" data-toggle="modal" data-target="#edit" data-placement="top" rel="tooltip"><span class="glyphicon glyphicon-pencil"></span></button></p></td>');
+          $tbody.append('<td><p><button id ="btn-edit-doctor"  class="btn btn-primary btn-xs" idDoctor='+model.cid+' data-title="Edit" data-toggle="modal" data-target="#edit" data-placement="top" rel="tooltip"><span class="glyphicon glyphicon-pencil"></span></button></p></td>');
           $tbody.append(' <td><p><button id = "btn-delete-doctor" class="btn btn-danger btn-xs" idDoctor='+model.cid+' data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip"><span class="glyphicon glyphicon-trash"></span></button></p></td>');
           $tbody.append('</tr>');
         });  
