@@ -66,6 +66,7 @@ app.delete('/manager/paciente/:id', authenticateAdm, deleteRelationPatientEstab)
 app.get('/adm/estabelecimento', getEstabs);
 app.get('/adm/estabelecimento/:id',getEstab);
 app.post('/adm/estabelecimento', addEstab);
+app.delete('/adm/estabelecimento/:id', deleteEstab);
 
 
 // ------------------------------------------------- Login/Logout --------------------------------------------------------
@@ -474,11 +475,9 @@ function updatePatient (req,res) {
 // ------------------------------------------------- Functions Estabs --------------------------------------------------------
 
 function getEstabs(req, res){
-  var query = connection.query('SELECT est.CNES, est.Nome, est.Descricao, tel.Telefone, est.Numero, end.Estado, end.Cidade, end.Bairro, end.Rua '+
-                               'FROM tb_estabelecimento AS est, tb_estabelecimento_endereco AS estend, ' +
-                                     'tb_endereco AS end, tb_telefone_estabelecimento AS tel ' +
-                                'WHERE est.CNES = estend.FK_Estabelecimento_End AND ' + 
-                                      'end.PK_Endereco = estend.FK_Endereco_Estab AND tel.FK_Estabelecimento = est.CNES ', 
+  var query = connection.query('SELECT est.CNES, est.Nome, est.Descricao, est.Numero, end.Estado, end.Cidade, end.Bairro, end.Rua '+
+                               'FROM tb_estabelecimento est, tb_estabelecimento_endereco estend, tb_endereco end ' +
+                               'WHERE est.CNES = estend.FK_Estabelecimento_End AND end.PK_Endereco = estend.FK_Endereco_Estab', 
                                 function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
@@ -489,12 +488,10 @@ function getEstabs(req, res){
 }  
 
 function getEstab(req, res){
-  var query = connection.query('SELECT est.CNES, est.Nome, est.Descricao, tel.Telefone, est.Numero, end.Estado, end.Cidade, end.Bairro, end.Rua '+
-                               'FROM tb_estabelecimento AS est, tb_estabelecimento_endereco AS estend, ' +
-                                    'tb_endereco AS end, tb_telefone_estabelecimento AS tel ' +
-                               'WHERE est.CNES = ? AND est.CNES = estend.FK_Estabelecimento_End AND ' + 
-                                     'end.PK_Endereco = estend.FK_Endereco_Estab AND tel.FK_Estabelecimento = est.CNES ',req.params.id,
-                               function(err, rows, fields) {
+  var query = connection.query('SELECT est.CNES, est.Nome, est.Descricao, est.Numero, end.Estado, end.Cidade, end.Bairro, end.Rua '+
+                               'FROM tb_estabelecimento est, tb_estabelecimento_endereco estend, tb_endereco AS end ' +
+                               'WHERE est.CNES = ? AND est.CNES = estend.FK_Estabelecimento_End AND end.PK_Endereco = estend.FK_Endereco_Estab',
+                               req.params.id,function(err, rows, fields) {
     if (!err) res.jsonp(rows[0]);
     else{
       res.send(403,'Ocorreu algum erro')
@@ -514,10 +511,10 @@ function addEstab(req, res){
                                                   if(!erro2){
                                                     var query3 = connection.query('SELECT * FROM tb_endereco', function(err, rows) {
                                                       if (!err) {
-                                                        var PK_Endereco = rows[rows.length-1].PK_Endereco;   
+                                                        var pkEndereco = rows[rows.length-1].PK_Endereco;   
                                                         var query4= connection.query('INSERT INTO tb_estabelecimento_endereco'+
                                                                 '(FK_Estabelecimento_End, FK_Endereco_Estab) VALUES(?,?)',
-                                                                [req.body.CNES, PK_Endereco], function(erro3){
+                                                                [req.body.CNES, pkEndereco], function(erro3){
                                                                   if(!erro3) res.send(200, 'Estabelecimento adicionado');
                                                                   else{
                                                                     res.send(403, 'Ocorreu algum erro');
@@ -533,7 +530,33 @@ function addEstab(req, res){
 }
 
 function deleteEstab(req, res){
-
+var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK_Estabelecimento_End = ?',
+      req.params.id, function(erro,rows){
+        if(!erro && rows!=null){
+          var pkEndereco = rows[0].FK_Endereco_Estab;
+          var pkRelacao = rows[0].PK_Establecimento_Endereco;
+          console.log(pkEndereco);
+          var deleteRelacao = connection.query('DELETE FROM tb_estabelecimento_endereco WHERE  PK_Establecimento_Endereco = ?',
+          					  pkRelacao, function(erro2){
+          					  	if(!erro2){
+          					  		var deleteEstab = connection.query('DELETE FROM tb_estabelecimento WHERE CNES = ?',
+				          					  		  req.params.id, function(erro3){
+				          					  		  	if(!erro3){
+				          					  		  	   var deleteEndereco = connection.query('DELETE FROM tb_endereco WHERE PK_Endereco = ?',
+				          					  		  	                        pkEndereco, function(erro4){
+				          					  		  	                        	if(!erro4) res.send(200, "Estabelecimento deletado");   
+				          					  		  	                        	else res.send(403, "Ocorreu algum erro ao deletar"); 
+				          					  		  	                        });
+				          					  		  	}
+				          					  		  });
+          					  	} 
+          					  });         
+        }
+        else{
+        	res.send(403, "Ocorreu algum erro ao deletar, verifique os dados");	
+        	console.log(erro);
+        } 
+      });
 }
 
 function newAppointment(req, res){
