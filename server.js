@@ -25,7 +25,7 @@ app.use(session({secret: 'secret'}));
 
 //Root
 app.get('/', function(req, res){
-  res.sendfile('index.html');
+  res.sendFile('index.html');
 });
 
 app.post('/login/adm', loginAdm);

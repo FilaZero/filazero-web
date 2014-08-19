@@ -40,11 +40,11 @@ define(['handlebars','jquery','underscore','backbone','text!templates/header.htm
  				dataType:"json",
  				statusCode: {
     				202: function(dado) {
-    					window.location.replace("/manager")
+    					window.location.replace("/manager");
       					//console.log(dado)
     				},
-    				403: function(dado) {
-    					alert("Login inválido. Tente novamente!"),
+    				403: function(dado){
+    					alert("Login inválido. Tente novamente!");
     					//console.log(dado)
     				}	
   				}
