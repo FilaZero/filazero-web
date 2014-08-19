@@ -359,7 +359,7 @@ function updateDoctor(req, res){
 // ------------------------------------------------- Functions Pacientes Estab --------------------------------------------------------
 function getPatients(req, res){
   var query = connection.query('SELECT cli.CPF, cli.Nome, cli.Sexo, cli.Email, cli.Telefone '+
-                               'FROM tb_cliente cli, tb_estabelecimento est, tb_client_cad_estab cad '+
+                               'FROM tb_cliente cli, tb_estabelecimento est, tb_cliente_cad_estab cad '+
                                'WHERE est.CNES = ? AND cad.FK_Cliente=cli.CPF AND cad.FK_Estabelecimento=est.CNES',
                                 req.session.idEstab, function(err, rows) {
     if (!err) res.jsonp(rows);
@@ -372,7 +372,7 @@ function getPatients(req, res){
 
 function getPatient(req, res){
   var query = connection.query('SELECT cli.CPF, cli.Nome, cli.Sexo, cli.Email, cli.Telefone '+
-                               'FROM tb_cliente cli, tb_estabelecimento est, tb_client_cad_estab cad '+
+                               'FROM tb_cliente cli, tb_estabelecimento est, tb_cliente_cad_estab cad '+
                                'WHERE cli.CPF =? AND est.CNES = ? AND cad.FK_Cliente=cli.CPF AND cad.FK_Estabelecimento = est.CNES',
                                 [req.params.id, req.session.idEstab], function(err, rows) {
     if (!err) res.jsonp(rows[0]);
@@ -404,11 +404,11 @@ function addPatient(req, res){
 }
 
 function addRelationPatientEstab(req,res){
-  var check = connection.query('SELECT * FROM tb_client_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
+  var check = connection.query('SELECT * FROM tb_cliente_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
     [req.params.id, req.session.idEstab], function(err, rows){
       var cad = rows[0];
       if(cad==null){
-        var query=connection.query('INSERT INTO tb_client_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
+        var query=connection.query('INSERT INTO tb_cliente_cad_estab(FK_Cliente,FK_Estabelecimento) VALUES(?,?)',
                   [req.body.CPF, req.session.idEstab], function(erro){
                     if(!erro) res.send(200,'Cliente adicionado');
                     else {
@@ -421,7 +421,7 @@ function addRelationPatientEstab(req,res){
 }
 
 function deleteRelationPatientEstab(req, res){
-  var query = connection.query('DELETE FROM tb_client_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
+  var query = connection.query('DELETE FROM tb_cliente_cad_estab WHERE FK_Cliente=? AND FK_Estabelecimento=?',
               [req.params.id, req.session.idEstab], function(err){
                 if(!err) res.send(200,'Cliente removido');
                 else{
