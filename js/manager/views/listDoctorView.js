@@ -22,7 +22,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       'click #btn-update': 'updateConfirm',
     },
     edit:function(e){
-      this.$("#edit-doctor").modal();
+      this.$("#edit").modal();
       var model = DoctorsCollection.get(e.currentTarget.attributes[2].value);
       console.log(model.get("CRM"));
       this.$CRM.val(model.get("CRM"));
@@ -35,7 +35,8 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       var modelUpdate = DoctorsCollection.get(e.currentTarget.attributes[4].value);
       modelUpdate.set({id: this.$CRM.val(),CRM: this.$CRM.val(), Nome: this.$Nome.val(), Descricao: this.$Descricao.val(), Especialidade: this.$Especialidade.val()});
       modelUpdate.save({},{url:'manager/medico/'+ modelUpdate.get('id')});
-      this.$("#edit-doctor").modal("hide");
+      this.$("#edit").modal("hide");
+      
     },
     modalDelete:function(e){
       this.$("#deleteDoctor").modal();

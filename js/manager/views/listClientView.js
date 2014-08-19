@@ -21,10 +21,10 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     events: {
       'click #btn-delete': 'modalDelete',
       'click #btn-confirm': 'deleteConfirm',
-      'click #btn-edit': 'edit',
+      'click #btn-edit': 'editConfirm',
       'click #btn-update': 'updateConfirm',
     },
-    edit:function(e){
+    editConfirm:function(e){
       this.$("#edit").modal();
       var model = ClientsCollection.get(e.currentTarget.attributes[1].value);
       this.$CPF.val(model.get("CPF"));
