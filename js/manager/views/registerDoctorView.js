@@ -35,6 +35,11 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
                    Nome: this.$Nome.val(),
                    Descricao: this.$Descricao.val(),
                    Especialidade: this.$Especialidade.val()}); 
+      this.$("#modal-delete-doctor").modal();
+      this.$CRM.val("");
+      this.$Nome.val("");
+      this.$Descricao.val("");
+      this.$Especialidade.val("");
     },
     render: function (){
       this.$el.html(this.template);

@@ -31,36 +31,6 @@
 </div>
 
 
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-      <div class="modal-dialog">
-    <div class="modal-content">
-          <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title custom_align" id="Heading">Editar médico</h4>
-      </div>
-          <div class="modal-body">
-          <div class="form-group">
-        <input class="form-control " type="text" placeholder="Mohsin">
-        </div>
-        <div class="form-group">
-        
-        <input class="form-control " type="text" placeholder="Irshad">
-        </div>
-        <div class="form-group">
-        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-    
-        
-        </div>
-      </div>
-          <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Atualizar</button>
-      </div>
-        </div>
-    <!-- /.modal-content --> 
-  </div>
-      <!-- /.modal-dialog --> 
-    </div>
-    
     
     
     <div class="modal fade" id="deleteDoctor" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
@@ -84,3 +54,62 @@
   </div>
       <!-- /.modal-dialog --> 
 </div>
+
+
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title custom_align" id="Heading">Editar paciente</h4>
+      </div>
+          <div class="modal-body">
+            <form class="form-horizontal" role="form">
+        <fieldset>
+
+          <!-- Form Name -->
+          <legend>Cadastrar médico</legend>
+
+                    <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">CRM</label>
+            <div class="col-sm-10">
+              <input id = "CRM" type="text" placeholder="Registro médico" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Nome</label>
+            <div class="col-sm-10">
+              <input id = "Nome" type="text" placeholder="Nome Completo" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Especialidade</label>
+            <div class="col-sm-10">
+              <input id = "Especialidade" type="text" placeholder="Cargo" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Observação</label>
+            <div class="col-sm-10">
+              <input id = "Descricao" type="text" placeholder="Informação adicional" class="form-control">
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+      </div>
+          <div class="modal-footer ">
+        <button id="btn-update" type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Atualizar</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
