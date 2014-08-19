@@ -2,7 +2,8 @@ define([
     'jquery',
     'backbone',
     'manager/views/appManager',
-    'admin/views/appAdmin'
+    'admin/views/appAdmin',
+    'views/app'
 ], function ($, Backbone,appManager,appAdmin) {
     var Routers = Backbone.Router.extend({
         routes: {
@@ -21,7 +22,7 @@ define([
             new appAdmin();	
         },
         logout: function() {
-            console.log("VINIIIIIIIII")
+            
         }
     });
 

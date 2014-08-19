@@ -52,11 +52,12 @@ app.get('/manager/medico', authenticateAdm, getDoctorsEstab);
 app.put('/manager/medico/:id', authenticateAdm, updateDoctor);
 app.put('/manager/medico', authenticateAdm, updateDoctors);
 app.post('/manager/medico',authenticateAdm, addDoctor);
-app.delete('/manager/medico/:id', authenticateAdm, deleteRelationDoctorEstab);
+app.delete
+('/manager/medico/:id', authenticateAdm, deleteRelationDoctorEstab);
 
-//routes manager paciente 
+//routes manager paciente
 app.get('/manager/paciente',authenticateAdm, getPatients);
-app.get('/manager/paciente/:id', authenticateAdm,getPatient);
+app.get('/manaid/paciente/:id', authenticateAdm,getPatient);
 app.put('/manager/paciente/:id', authenticateAdm, updatePatient);
 app.post('/manager/paciente', authenticateAdm, addPatient);
 app.delete('/manager/paciente/:id', authenticateAdm, deleteRelationPatientEstab);
@@ -99,8 +100,8 @@ function logoutAdm(req, res){
 function authenticateAdm(req, res, next){
   if(req.session.idEstab) next();
   else{
-    res.redirect('/');
     console.log('Access denied');
+    res.redirect('/');
     //res.send(403,'Access denied'); 
   } 
 }
@@ -304,7 +305,7 @@ function addRelationDoctorEstab(req,res){
 
 function deleteRelationDoctorEstab(req,res){
   var query = connection.query('DELETE FROM tb_medico_trabalha_estabelecimento WHERE FK_Medico_Estab = ? AND FK_Estabelecimento_Med = ?',
-                                [req.params.crm, req.session.idEstab], function(err){
+                                [req.params.id, req.session.idEstab], function(err){
                                   if(!err) res.send(200,'Medico deletado');
                                   else{ 
                                     res.send(403,'Ocorreu algum erro, verifiqueo log');

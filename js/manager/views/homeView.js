@@ -4,7 +4,7 @@ define(['handlebars','jquery','underscore','backbone','text!templates/home.html'
 		el:"#top",
 		template: Handlebars.compile(HomeTemplate),
 		initialize:function() {
-			console.log('Initializing Home View'); 
+			console.log('Initializing Home Manager View'); 
 			this.render();
 		},
 		render : function (){

@@ -12,21 +12,18 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     },
     events: {
       'click #btn-delete-doctor': 'modalDelete',
-      'click #btn-confirm': 'deleteConfirm'
+      'click #btn-confirm-doctor': 'deleteConfirm'
     },
     modalDelete:function(e){
-      console.log(e);
-      this.$("#delete").modal();
-      this.$("#btn-confirm").attr('doctorId',e.currentTarget.attributes[2].value); 
+      this.$("#deleteDoctor").modal();
+      this.$("#btn-confirm-doctor").attr('doctorId',e.currentTarget.attributes[2].value); 
     },
     deleteConfirm:function(e) {
-      e.preventDefault();
-      var idForDelete =  this.$("#btn-confirm").attr('doctorId');
+      var idForDelete =  this.$("#btn-confirm-doctor").attr('doctorId');
       var modelDelete = DoctorsCollection.get(idForDelete);
       modelDelete.set({id: modelDelete.get("CRM")});
-      console.log(modelDelete.get("id"));
       modelDelete.destroy();
-      this.$("#delete").modal("hide");
+      this.$("#deleteDoctor").modal("hide");
     },
     setDoctors:function($tbody){
         DoctorsCollection.each(function(model) {

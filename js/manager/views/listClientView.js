@@ -46,7 +46,6 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       this.$("#btn-confirm").attr('clientId',e.currentTarget.attributes[1].value); 
     },
     deleteConfirm:function(e) {
-      console.log("entrou");
       var idForDelete =  this.$("#btn-confirm").attr('clientId');
       var modelDelete = ClientsCollection.get(idForDelete);
       modelDelete.set({id: modelDelete.get("CPF")});
