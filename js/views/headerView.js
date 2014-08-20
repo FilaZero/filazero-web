@@ -39,13 +39,16 @@ define(['handlebars','jquery','underscore','backbone','text!templates/header.htm
  				contentType:"application/json",
  				dataType:"json",
  				statusCode: {
+    				200: function() {
+    					window.location.replace("manager");
+    				},
     				202: function(dado) {
-    					window.location.replace("/manager");
-      					//console.log(dado)
+    					window.location.replace("admin");
+      					//console.log(dado);
     				},
     				403: function(dado){
     					alert("Login inválido. Tente novamente!");
-    					//console.log(dado)
+    					//console.log(dado);
     				}	
   				}
     		});

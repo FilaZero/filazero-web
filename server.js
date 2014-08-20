@@ -32,7 +32,7 @@ app.post('/login/adm', loginAdm);
 app.get('/logout/adm',logoutAdm);
 
 //admin
-app.get('/admin',authenticateAdm,admin);
+app.get('/admin',authenticateAdmin,admin);
 
 //routers clientes
 app.get('/paciente', getUsers);
@@ -46,20 +46,20 @@ app.put('/paciente',updateUsers);
 
 
 //routers manager doctors
-app.get('/manager',authenticateAdm,manager);
-app.get('/manager/medico/:id', authenticateAdm, getDoctor);
-app.get('/manager/medico', authenticateAdm, getDoctorsEstab);
-app.put('/manager/medico/:id', authenticateAdm, updateDoctor);
-app.put('/manager/medico', authenticateAdm, updateDoctors);
-app.post('/manager/medico',authenticateAdm, addDoctor);
-app.delete('/manager/medico/:id', authenticateAdm, deleteRelationDoctorEstab);
+app.get('/manager',authenticateManager,manager);
+app.get('/manager/medico/:id', authenticateManager, getDoctor);
+app.get('/manager/medico', authenticateManager, getDoctorsEstab);
+app.put('/manager/medico/:id', authenticateManager, updateDoctor);
+app.put('/manager/medico', authenticateManager, updateDoctors);
+app.post('/manager/medico',authenticateManager, addDoctor);
+app.delete('/manager/medico/:id', authenticateManager, deleteRelationDoctorEstab);
 
 //routes manager paciente 
-app.get('/manager/paciente',authenticateAdm, getPatients);
-app.get('/manager/paciente/:id', authenticateAdm,getPatient);
-app.put('/manager/paciente/:id', authenticateAdm, updatePatient);
-app.post('/manager/paciente', authenticateAdm, addPatient);
-app.delete('/manager/paciente/:id', authenticateAdm, deleteRelationPatientEstab);
+app.get('/manager/paciente',authenticateManager, getPatients);
+app.get('/manager/paciente/:id', authenticateManager,getPatient);
+app.put('/manager/paciente/:id', authenticateManager, updatePatient);
+app.post('/manager/paciente', authenticateManager, addPatient);
+app.delete('/manager/paciente/:id', authenticateManager, deleteRelationPatientEstab);
 
 
 //routers adm estabelishments
@@ -77,12 +77,24 @@ function loginAdm(req, res) {
 			    		if(rows[0] != null){
 			    			var adm = rows[0];
 			    		 	req.session.idEstab = adm.FK_Estabelecimento;
-			    			console.log('login sucess');
-                  			//caso falhe, remover '.send(202)'
-                  			res.status(202).send(202).send(req.session.idEstab);
-              			}
-			    		else{
-			    			res.status(403).send(403);
+			    			console.log('login manager sucess');
+                res.status(200).end();
+              } else{
+                var query = connection.query('SELECT * FROM tb_su WHERE Login = ? AND Senha = ? ', 
+                  [req.body.login, req.body.senha], function(err, rows){
+                if(!err){
+                  if(rows[0] != null){
+                    var adm = rows[0];
+                    req.session.idAdmin = adm.PK_SU;
+                    console.log(adm);
+                    console.log('login admin sucess');
+                    res.status(202).end();
+                        }
+                  else{
+                    res.status(403).send(403);
+                  }             
+                }
+              });
 			    		}			    		
 			    	}
             else{
@@ -100,8 +112,16 @@ function logoutAdm(req, res){
   }
 }
 
-function authenticateAdm(req, res, next){
+function authenticateManager(req, res, next){
   if(req.session.idEstab) next();
+  else{
+    res.redirect('/');
+    console.log('Access denied');
+  } 
+}
+
+function authenticateAdmin(req, res, next){
+  if(req.session.idAdmin) next();
   else{
     res.redirect('/');
     console.log('Access denied');
