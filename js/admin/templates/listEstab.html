@@ -38,21 +38,78 @@
         <h4 class="modal-title custom_align" id="Heading">Editar estabelecimento</h4>
       </div>
           <div class="modal-body">
+            <form class="form-horizontal" role="form">
+        <fieldset>
+
+                    <!-- Text input-->
           <div class="form-group">
-        <input class="form-control " type="text" placeholder="Mohsin">
-        </div>
-        <div class="form-group">
-        
-        <input class="form-control " type="text" placeholder="Irshad">
-        </div>
-        <div class="form-group">
-        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-    
-        
-        </div>
+            <label class="col-sm-2 control-label" for="textinput">CNES</label>
+            <div class="col-sm-10">
+              <input id = "CNES" type="text" placeholder="Registro do estabelecimento" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Nome</label>
+            <div class="col-sm-10">
+              <input id = "Nome" type="text" placeholder="Nome do estabelecimento" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Descrição</label>
+            <div class="col-sm-10">
+              <input id = "Descricao" type="text" placeholder="Informação adicional" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Rua</label>
+            <div class="col-sm-10">
+              <input id = "Rua" type="text" placeholder="Endereço da clinica" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Número</label>
+            <div class="col-sm-10">
+              <input id = "Numero" type="text" placeholder="Número" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Bairro</label>
+            <div class="col-sm-10">
+              <input id = "Bairro" type="text" placeholder="Bairro" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Cidade</label>
+            <div class="col-sm-10">
+              <input id = "Cidade" type="text" placeholder="Cidade" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Estado</label>
+            <div class="col-sm-10">
+              <input id = "Estado" type="text" placeholder="Estado" class="form-control">
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Atualizar</button>
+        <button id="btn-update" type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Atualizar</button>
       </div>
         </div>
     <!-- /.modal-content --> 
@@ -75,10 +132,46 @@
        
       </div>
         <div class="modal-footer ">
-        <button type="button" class="btn btn-warning" ><span class="glyphicon glyphicon-ok-sign"></span> Sim</button>
+        <button id="btn-confirm" type="button" class="btn btn-warning" ><span class="glyphicon glyphicon-ok-sign"></span> Sim</button>
         <button type="button" class="btn btn-warning" ><span class="glyphicon glyphicon-remove"></span> Não</button>
       </div>
         </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
+
+
+<div class="modal fade" id="removeSucess" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Estabelecimento removido com sucesso</div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
+
+
+
+<div class="modal fade" id="removeFail" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Desculpa algum erro ocorreu</div>
+       
+      </div>
+        
+    </div>
     <!-- /.modal-content --> 
   </div>
       <!-- /.modal-dialog --> 
