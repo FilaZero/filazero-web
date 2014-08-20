@@ -5,7 +5,12 @@ define(['underscore','backbone'],function ( _ ,Backbone){
 			CNES : "",
 			Nome: "",
 			Descricao:"",
-			Numero:""
+			Numero:"",
+			Rua:"",
+			Bairro:"",
+			Cidade:"",
+			Estado:""
+
 		},
 		
 		initialize : function() {

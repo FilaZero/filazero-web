@@ -13,7 +13,12 @@ define(['handlebars','jquery','underscore','backbone','text!admin/templates/regi
       this.$Nome = this.$("#Nome");
       this.$Descricao = this.$("#Descricao");
       this.$Numero = this.$("#Numero");
-      this.existCNES(this.$CNES,this.$Nome,this.$Descricao,this.$Numero);
+      this.$Rua = this.$("#Rua");
+      this.$Bairro = this.$("#Bairro");
+      this.$Cidade = this.$("#Cidade");
+      this.$Estado = this.$("#Estado");
+
+      this.existCNES(this.$CNES,this.$Nome,this.$Descricao,this.$Rua,this.$Numero,this.$Bairro,this.$Cidade,this.$Estado);
     },
     events: {
       'click #add-estab' : 'addEstab'
@@ -24,7 +29,11 @@ define(['handlebars','jquery','underscore','backbone','text!admin/templates/regi
           if(model.get("CNES") == $CNES.val()){        
             $Nome.val(model.get("Nome"));
             $Descricao.val(model.get("Descricao"));
+            $Rua.val(model.get("Rua"));
             $Numero.val(model.get("Numero"));
+            $Bairro.val(model.get("Bairro"));
+            $Cidade.val(model.get("Cidade"));
+            $Estado.val(model.get("Estado"));
           }
         });
       });
@@ -34,7 +43,11 @@ define(['handlebars','jquery','underscore','backbone','text!admin/templates/regi
       EstabsCollection.create({CNES: this.$CNES.val(),
                    Nome: this.$Nome.val(),
                    Descricao: this.$Descricao.val(),
-                   Numero: this.$Numero.val()}); 
+                   Rua: this.$Rua.val(),
+                   Numero: this.$Numero.val(),
+                   Bairro: this.$Bairro.val(),
+                   Cidade: this.$Cidade.val(),
+                   Estado: this.$Estado.val()}); 
     },
     render: function (){
       this.$el.html(this.template);
