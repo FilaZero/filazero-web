@@ -37,13 +37,16 @@ app.get('/admin',authenticateAdmin,admin);
 //routers clientes
 app.get('/paciente', getUsers);
 app.get('/paciente/:id', getUser);
-app.post('/consulta', newAppointment);
 app.post('/paciente', addUser);
 app.delete('/paciente/:id',deleteUser);
 app.delete('/paciente/',deleteUsers);
 app.put('/paciente/cpf',updateUser);
 app.put('/paciente',updateUsers);
 
+//routers manager appointments
+app.post('/consulta', authenticateManager, newAppointment);
+app.get('/consulta', authenticateManager, getAppointments);
+app.delete('/consulta/:id', authenticateManager, deleteAppointment);
 
 //routers manager doctors
 app.get('/manager',authenticateManager,manager);
@@ -586,6 +589,30 @@ function newAppointment(req, res){
     if (!err) res.jsonp(rows[0]);
     else{
       res.send(403,'Ocorreu algum erro')
+      console.log(err);
+    }
+  });
+}
+
+function getAppointments(req, res){
+  var query = connection.query('SELECT * FROM tb_consulta WHERE FK_Estabelecimento = ?', req.session.idEstab, function(err, rows, fields) {
+    if (!err) res.jsonp(rows);
+    else{
+      res.send('Ocorreu algum erro')
+      console.log(err);
+    }
+  });
+}
+
+function deleteAppointment(req, res){
+  var query = connection.query('DELETE FROM tb_consulta WHERE FK_Estabelecimento = ? AND PK_Consulta = ?', [req.session.idEstab, req.params.id], function(err, rows, fields) {
+    if(!err){
+      res.send(200,'Consulta removida');
+      console.log('Consulta removida');
+    } 
+     else{
+      res.send(403,'Erro ao remover');
+      console.log('Erro ao remover');
       console.log(err);
     }
   });
