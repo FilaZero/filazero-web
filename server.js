@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   database : 'filazero',
   user     : 'root',
-  password : 'abc123'
+  password : ''
 });
 
 connection.connect();
@@ -595,7 +595,7 @@ function newAppointment(req, res){
 }
 
 function getAppointments(req, res){
-  var query = connection.query('SELECT * FROM tb_consulta WHERE FK_Estabelecimento = ?', req.session.idEstab, function(err, rows, fields) {
+  var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbC.Turno, tbC.Status, tbC.HoraConfirmacao, tbC.DataConfirmacao, tbC.FK_Medico,  tBM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente" FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')
