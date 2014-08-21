@@ -45,15 +45,12 @@ app.put('/paciente/cpf',updateUser);
 app.put('/paciente',updateUsers);
 
 //routers manager rows and appointments
-app.post('/manager/consulta', authenticateManager, newAppointment);
+app.post('/manager/consulta', authenticateManager, addAppointment);
 app.get('/manager/consulta', authenticateManager, getAppointments);
 app.delete('/manager/consulta/:id', authenticateManager, deleteAppointment);
-// confirm appointment
 app.put('/manager/consulta/', authenticateManager, confirmAppointment);
-// delete row
 app.put('/manager/fila/', authenticateManager, deleteRow);
-// list row
-app.get('/manager/fila/', authenticateManager, listRow);
+app.get('/manager/fila/', authenticateManager, getRow);
 
 //routers manager doctors
 app.get('/manager',authenticateManager,manager);
@@ -589,7 +586,10 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
       });
 }
 
-function newAppointment(req, res){
+// ------------------------------------------------- Functions Appointment --------------------------------------------------------
+
+
+function addAppointment(req, res){
   var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno)  '+
                                'VALUES (?, ?, ?, ?, ?, ?)',
                                [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno], function(err, rows, fields) {
@@ -669,6 +669,9 @@ function confirmAppointment(req, res) {
     });
 }
 
+// ------------------------------------------------- Functions Row --------------------------------------------------------
+
+
 function deleteRow (req, res) {
   if (req.body.Status == "Cancelado" || req.body.Status == "Concluido") {
     var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows, fields) {
@@ -690,7 +693,7 @@ function deleteRow (req, res) {
   }
 }
 
-function listRow (req, res) {
+function getRow (req, res) {
     var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tBM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila, tbFi.QuantidadeAntes, tbFi.TempoEstimado FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
