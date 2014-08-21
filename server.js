@@ -471,31 +471,6 @@ function updatePatient (req,res) {
         console.log(err);
       }          
   });
-  /*
-  var queryTemp = 'UPDATE tb_cliente SET '
-  var count = 0
-  for(var key in clienteTemp){
-    if(count>0){
-      queryTemp+= key +' = \"' + clienteTemp[key] + '\" ,';       
-    }
-    count++;
-  } 
-  var temp = new String(queryTemp); 
-  queryTemp = temp.substring(0,(temp.length-1)); //retira a ultima virgula
-  queryTemp+= ' WHERE CPF = ?';
-  var cpf = clienteTemp.CPF;
-  
-  var query = connection.query(queryTemp, cpf, function(err){
-    if(!err){
-      res.send(200,'Cliente atualizado');
-      console.log('Cliente atualizado');
-    }
-    else {
-      res.send(403,'Erro ao atualizar');
-      console.log('Erro ao atualizar');
-      console.log(err);
-    }  
-  });*/
 }
 
 
@@ -612,7 +587,8 @@ function getAppointments(req, res){
 }
 
 function deleteAppointment(req, res){
-  var query = connection.query('DELETE FROM tb_consulta WHERE FK_Estabelecimento = ? AND PK_Consulta = ?', [req.session.idEstab, req.params.id], function(err, rows, fields) {
+  var query = connection.query('UPDATE tb_consulta SET Status = "Cancelado" WHERE FK_Estabelecimento = ? AND PK_Consulta = ?',
+   [req.session.idEstab, req.params.id], function(err, rows, fields) {
     if(!err){
       res.send(200,'Consulta removida');
       console.log('Consulta removida');
@@ -694,7 +670,7 @@ function deleteRow (req, res) {
 }
 
 function getRow (req, res) {
-    var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tBM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila, tbFi.QuantidadeAntes, tbFi.TempoEstimado FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
+    var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila, tbFi.QuantidadeAntes, tbFi.TempoEstimado FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')
