@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   database : 'filazero',
   user     : 'root',
-  password : 'abc123',
+  password : '',
   dateStrings : 'true'
 });
 
@@ -45,15 +45,15 @@ app.put('/paciente/cpf',updateUser);
 app.put('/paciente',updateUsers);
 
 //routers manager rows and appointments
-app.post('/consulta', authenticateManager, newAppointment);
-app.get('/consulta', authenticateManager, getAppointments);
-app.delete('/consulta/:id', authenticateManager, deleteAppointment);
+app.post('/manager/onsulta', authenticateManager, newAppointment);
+app.get('/manager/consulta', authenticateManager, getAppointments);
+app.delete('/manager/consulta/:id', authenticateManager, deleteAppointment);
 // confirm appointment
-app.post('/fila/', authenticateManager, confirmAppointment);
+app.put('/manager/consulta/', authenticateManager, confirmAppointment);
 // delete row
-app.delete('/fila/:id/:op', authenticateManager, deleteRow);
+app.put('/manager/fila/', authenticateManager, deleteRow);
 // list row
-app.get('/fila/', authenticateManager, listRow);
+app.get('/manager/fila/', authenticateManager, listRow);
 
 //routers manager doctors
 app.get('/manager',authenticateManager,manager);
@@ -630,7 +630,6 @@ function confirmAppointment(req, res) {
     var current_hour = date.getHours();
     var qtdePacientes;
     var dateAppointment = connection.query('SELECT * FROM tb_consulta WHERE PK_Consulta = ?', [req.body.PK_Consulta], function(err, rows, fields) {
-        console.log("entrou um");
         if (!err) {
             var query2 = connection.query('SELECT COUNT(*) AS quantity FROM tb_consulta WHERE Status = "Confirmado" AND Data = ? AND FK_Estabelecimento = ? AND FK_Medico = ? ', [rows[0]['Data'], rows[0]['FK_Estabelecimento'], rows[0]['FK_Medico']], function(err2, rows2, fields) {
             if (!err2) {
@@ -671,23 +670,28 @@ function confirmAppointment(req, res) {
 }
 
 function deleteRow (req, res) {
-  var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows, fields) {
-        var query2 = connection.query('UPDATE tb_consulta SET Status  = "Cancelado" WHERE PK_Consulta = ?', req.body.PK_Consulta, function(err2) {
-          if(!err2){
-            res.send(200,'Removido da fila');
-            console.log('Removido da fila');
-          } 
-           else{
-            res.send(403,'Não removido da fila');
-            console.log('Não removido da fila');
-            console.log(err2);
-          }
-        }); 
-  });
+  if (req.body.Status == "Cancelado" || req.body.Status == "Concluido") {
+    var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows, fields) {
+          var query2 = connection.query('UPDATE tb_consulta SET Status  = ? WHERE PK_Consulta = ?', [req.body.Status, req.body.PK_Consulta], function(err2) {
+            if(!err2){
+              res.send(200,'Removido da fila');
+              console.log('Removido da fila');
+            } 
+             else{
+              res.send(403,'Não removido da fila');
+              console.log('Não removido da fila');
+              console.log(err2);
+            }
+          }); 
+    });
+  } else if (req.body.Status == "FimFila") {
+        var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows, fields) {});
+        confirmAppointment(req, res);
+  }
 }
 
 function listRow (req, res) {
-    var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbC.FK_Medico, tBM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
+    var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tBM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila, tbFi.QuantidadeAntes, tbFi.TempoEstimado FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')
