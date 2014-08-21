@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   database : 'filazero',
   user     : 'root',
-  password : 'abc123',
+  password : '',
   dateStrings : 'true'
 });
 
