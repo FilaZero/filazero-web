@@ -49,11 +49,11 @@ app.post('/consulta', authenticateManager, newAppointment);
 app.get('/consulta', authenticateManager, getAppointments);
 app.delete('/consulta/:id', authenticateManager, deleteAppointment);
 // confirm appointment
-app.post('/consulta/confirmar/', authenticateManager, confirmAppointment);
+app.post('/fila/', authenticateManager, confirmAppointment);
 // delete row
-app.delete('/consulta/row/:id', authenticateManager, deleteRow);
+app.delete('/fila/:id/:op', authenticateManager, deleteRow);
 // list row
-app.get('/consulta/row', authenticateManager, listRow);
+app.get('/fila/', authenticateManager, listRow);
 
 //routers manager doctors
 app.get('/manager',authenticateManager,manager);
