@@ -45,7 +45,7 @@ app.put('/paciente/cpf',updateUser);
 app.put('/paciente',updateUsers);
 
 //routers manager rows and appointments
-app.post('/manager/onsulta', authenticateManager, newAppointment);
+app.post('/manager/consulta', authenticateManager, newAppointment);
 app.get('/manager/consulta', authenticateManager, getAppointments);
 app.delete('/manager/consulta/:id', authenticateManager, deleteAppointment);
 // confirm appointment
