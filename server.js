@@ -592,7 +592,7 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
 function newAppointment(req, res){
   var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno)  '+
                                'VALUES (?, ?, ?, ?, ?, ?)',
-                               [req.body.CPF, req.session.idEstab, req.body.CRM, req.body.Status, req.body.Data, req.body.Turno], function(err, rows, fields) {
+                               [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno], function(err, rows, fields) {
     if (!err) res.jsonp(rows[0]);
     else{
       res.send(403,'Ocorreu algum erro')
@@ -672,16 +672,18 @@ function confirmAppointment(req, res) {
 
 function deleteRow (req, res) {
   var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows, fields) {
-      if(!err){
-        res.send(200,'Removido da fila');
-        console.log('Removido da fila');
-      } 
-       else{
-        res.send(403,'Removido da fila');
-        console.log('Removido da fila');
-        console.log(err);
-      }
-    }); 
+        var query2 = connection.query('UPDATE tb_consulta SET Status  = "Cancelado" WHERE PK_Consulta = ?', req.body.PK_Consulta, function(err2) {
+          if(!err2){
+            res.send(200,'Removido da fila');
+            console.log('Removido da fila');
+          } 
+           else{
+            res.send(403,'Não removido da fila');
+            console.log('Não removido da fila');
+            console.log(err2);
+          }
+        }); 
+  });
 }
 
 function listRow (req, res) {
