@@ -670,7 +670,7 @@ function deleteRow (req, res) {
 }
 
 function getRow (req, res) {
-    var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tBM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila, tbFi.QuantidadeAntes, tbFi.TempoEstimado FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
+    var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente", tbFi.PK_Fila, tbFi.QuantidadeAntes, tbFi.TempoEstimado FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl, tb_fila tbFi WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND tbFi.FK_Consulta = tbC.PK_Consulta', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')
