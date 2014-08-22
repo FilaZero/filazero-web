@@ -39,6 +39,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       console.log(modelUpdate);
       modelUpdate.set({id: this.$CPF.val(), CPF: this.$CPF.val(), Nome: this.$Nome.val(), Sexo: this.$Sexo.val(), Email: this.$Email.val(), Telefone: this.$Telefone.val()});
       modelUpdate.save({},{url:'manager/paciente/'+ modelUpdate.get('id')});
+      this.render();
       this.$("#edit").modal("hide");
     },
     modalDelete:function(e){
@@ -67,7 +68,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     },
    
     render: function (){
-      this.$("#delete").modal("hide");
+      this.$("#edit").modal("hide");
       this.$el.html(this.template);
       return this;
     }
