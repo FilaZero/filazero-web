@@ -19,10 +19,9 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       this.setAppointments(this.$tbody);
     },
     events: {
-      'click #btn-delete': 'modalDelete',
-      'click #btn-confirm': 'deleteConfirm',
-      'click #btnConfirm': 'Confirm',
-      'click #btn-update': 'updateConfirm',
+      'click #btnCancelar': 'modalDelete',
+      'click #btn-confirm-cancelar': 'deleteConfirm',
+      'click #btnConfirm': 'Confirm'
     },
     Confirm:function(e){
       var model = AppointmentsCollection.get(e.currentTarget.attributes[1].value);
@@ -44,13 +43,10 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
           }
           }
         });
-      this.$('#btn-update').attr('idConsulta',e.currentTarget.attributes[1].value);
     },
-    updateConfirm:function(e){
-      var modelUpdate = AppointmentsCollection.get(e.currentTarget.attributes[4].value);
-      modelUpdate.set({id: this.$PK_Consulta.val(), CPF: this.$CPF.val(), CRM: this.$CRM.val(), Data: this.$Data.val(), Turno: this.$Turno.val()});
-      modelUpdate.save({},{url:'manager/consulta/'+ modelUpdate.get('id')});
-      this.$("#edit").modal("hide");
+    modalConfirm:function(e){
+      this.$("#confirme").modal();
+      this.$("#btn-update").attr('appointmentId',e.currentTarget.attributes[1].value); 
     },
     modalDelete:function(e){
       this.$("#delete").modal();
@@ -66,8 +62,8 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     setAppointments:function($tbody){
         AppointmentsCollection.each(function(model) {
           $tbody.append('<tr>');
-          $tbody.append('<td>'+model.get("CPF")+ '</td>');
-          $tbody.append('<td>'+model.get("CRM")+ '</td>');
+          $tbody.append('<td>'+model.get("NomeCliente")+ '</td>');
+          $tbody.append('<td>'+model.get("NomeMedico")+ '</td>');
           $tbody.append('<td>'+model.get("Data")+ '</td>');
           $tbody.append('<td>'+model.get("Turno")+ '</td>');
           $tbody.append('<td><p><button id="btnConfirm" idAppointment='+model.cid+' class="btn btn-success btn-xs" data-title="Confirm"><span class="glyphicon glyphicon-ok"></span></button></p></td>');

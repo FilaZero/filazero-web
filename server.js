@@ -565,9 +565,10 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
 
 
 function addAppointment(req, res){
-  var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno)  '+
+  console.log(req.body);
+  var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno, Presente)  '+
                                'VALUES (?, ?, ?, ?, ?, ?)',
-                               [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno], function(err) {
+                               [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno,"Sim"], function(err) {
     if (!err) res.jsonp("Consulta marcada");
     else{
       res.send(403,'Ocorreu algum erro')
@@ -577,7 +578,7 @@ function addAppointment(req, res){
 }
 
 function getAppointments(req, res){
-  var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbC.Turno, tbC.Status, tbC.HoraConfirmacao, tbC.DataConfirmacao, tbC.FK_Medico,  tbM.Nome AS "NomeMedico", tbCl.Nome "NomeCliente" FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente', req.session.idEstab, function(err, rows, fields) {
+  var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbC.Turno, tbC.Status, tbC.HoraConfirmacao, tbC.DataConfirmacao, tbC.FK_Medico as CRM,  tbM.Nome AS "NomeMedico", tbCl.CPF as CPF, tbCl.Nome "NomeCliente" FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')

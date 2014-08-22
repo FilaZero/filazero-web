@@ -8,7 +8,6 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
       this.render();
 
       //DOM
-      this.$PK_Consulta = this.$("PK_Consulta");
       this.$CPF = this.$("#CPF");
       this.$CRM = this.$("#CRM");
       this.$Data = this.$("#Data");
@@ -33,6 +32,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
     },*/
     addAppointment: function(e){
       AppointmentsCollection.create({
+                   PK_Consulta: "",
                    CPF: this.$CPF.val(),
                    CRM: this.$CRM.val(),
                    Data: this.$Data.val(),
