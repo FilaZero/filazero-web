@@ -565,8 +565,8 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
 
 
 function addAppointment(req, res){
-  var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno, Presente)  '+
-                               'VALUES (?, ?, ?, ?, ?, ?, ?)',
+  var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno, Presente, Tipo)  '+
+                               'VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                                [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno,"Sim"], function(err) {
     if (!err) res.jsonp("Consulta marcada");
     else{
