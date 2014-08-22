@@ -1,15 +1,23 @@
-define(['handlebars','jquery','underscore','backbone','text!manager/templates/listAppointment.html','manager/collections/appointmentCollection','bootstrap'],function(Handlebars,$,_,Backbone,listAppointmentTemplate,AppointmentsCollection){
+define(['handlebars',
+  'jquery',
+  'underscore',
+  'backbone',
+  'text!manager/templates/listAppointment.html',
+  'manager/collections/appointmentCollection',
+  'manager/collections/queueCollection',
+  'bootstrap'],
+  function(Handlebars,$,_,Backbone,listAppointmentTemplate,AppointmentsCollection,QueuesCollection){
   'use strict';
   var listAppointmentView = Backbone.View.extend({
     el:'#content',
     template: Handlebars.compile(listAppointmentTemplate),
 
     initialize:function() {
-      this.render();
+      this.render();       
       console.log('Initializing ListAppointment View');
 
-      //Dom
-       //DOM
+
+
       this.$PK_Consulta = this.$("PK_Consulta");
       this.$CPF = this.$("#CPF");
       this.$CRM = this.$("#CRM");
@@ -19,14 +27,21 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       this.setAppointments(this.$tbody);
     },
     events: {
-      'click #btnCancelar': 'modalDelete',
-      'click #btn-confirm-cancelar': 'deleteConfirm',
-      'click #btnConfirm': 'Confirm'
+      'click #btnCancel': 'modalCancel',
+      'click #btn-cancel-consulta': 'cancel',
+      'click #btnConfirm': 'modalConfirm',
+      'click #btn-confirm-consulta': 'confirm', 
+      
     },
-    Confirm:function(e){
-      var model = AppointmentsCollection.get(e.currentTarget.attributes[1].value);
+    modalConfirm:function(e){
+      this.$("#confirm").modal();
+      this.$("#btn-confirm-consulta").attr('appointmentId',e.currentTarget.attributes[1].value); 
+    },
+    confirm:function(e){     
+      var idForConfirm =  this.$("#btn-confirm-consulta").attr('appointmentId');
+      var model = AppointmentsCollection.get(idForConfirm);
       console.log(model.get("PK_Consulta"));
-      $.ajax({
+      $.ajax({  
         url:"manager/consulta",
         type:"PUT",
           data: JSON.stringify({
@@ -43,21 +58,20 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
           }
           }
         });
+        this.$("#confirm").modal("hide");
+        QueuesCollection.fetch();
     },
-    modalConfirm:function(e){
-      this.$("#confirme").modal();
-      this.$("#btn-update").attr('appointmentId',e.currentTarget.attributes[1].value); 
+    modalCancel:function(e){
+      this.$("#cancel").modal();
+      this.$("#btn-cancel-consulta").attr('appointmentId', e.currentTarget.attributes[1].value); 
     },
-    modalDelete:function(e){
-      this.$("#delete").modal();
-      this.$("#btn-confirm-cancelar").attr('appointmentId',e.currentTarget.attributes[1].value); 
-    },
-    deleteConfirm:function(e) {
-      var idForDelete =  this.$("#btn-confirm-cancelar").attr('appointmentId');
+    cancel:function(e) {
+      var idForDelete =  this.$("#btn-cancel-consulta").attr('appointmentId');
       var modelDelete = AppointmentsCollection.get(idForDelete);
       modelDelete.set({id: modelDelete.get("PK_Consulta")});
       modelDelete.destroy();
-      this.$("#delete").modal("hide");
+      this.$("#cancel").modal("hide");
+      QueuesCollection.fetch();
     },
     setAppointments:function($tbody){
         AppointmentsCollection.each(function(model) {
@@ -66,8 +80,8 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
           $tbody.append('<td>'+model.get("NomeMedico")+ '</td>');
           $tbody.append('<td>'+model.get("Data")+ '</td>');
           $tbody.append('<td>'+model.get("Turno")+ '</td>');
-          $tbody.append('<td><p><button id="btnConfirm" idAppointment='+model.cid+' class="btn btn-success btn-xs" data-title="Confirm"><span class="glyphicon glyphicon-ok"></span></button></p></td>');
-          $tbody.append('<td><p><button id="btnCancelar"  idAppointment='+model.cid+' class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-remove"></span></button></p></td>');
+          $tbody.append('<td><p><button id="btnConfirm" appointmentId='+model.cid+' class="btn btn-success btn-xs" data-title="Confirm"><span class="glyphicon glyphicon-ok"></span></button></p></td>');
+          $tbody.append('<td><p><button id="btnCancel"  appointmentId='+model.cid+' class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-remove"></span></button></p></td>');
           $tbody.append('</tr>');
         });  
     },

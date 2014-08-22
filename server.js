@@ -537,7 +537,7 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
         if(!erro && rows!=null){
           var pkEndereco = rows[0].FK_Endereco_Estab;
           var pkRelacao = rows[0].PK_Establecimento_Endereco;
-          console.log(pkEndereco);
+         
           var deleteRelacao = connection.query('DELETE FROM tb_estabelecimento_endereco WHERE  PK_Establecimento_Endereco = ?',
           					  pkRelacao, function(erro2){
           					  	if(!erro2){
@@ -577,7 +577,7 @@ function addAppointment(req, res){
 }
 
 function getAppointments(req, res){
-  var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbC.Turno, tbC.Status, tbC.HoraConfirmacao, tbC.DataConfirmacao, tbC.FK_Medico as CRM,  tbM.Nome AS "NomeMedico", tbCl.CPF as CPF, tbCl.Nome "NomeCliente" FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente', req.session.idEstab, function(err, rows, fields) {
+  var query = connection.query('SELECT tbC.PK_Consulta, tbC.Data, tbC.Turno, tbC.Status, tbC.HoraConfirmacao, tbC.DataConfirmacao, tbC.FK_Medico as CRM,  tbM.Nome AS "NomeMedico", tbCl.CPF as CPF, tbCl.Nome "NomeCliente" FROM tb_consulta tbC, tb_medico tbM, tb_cliente tbCl WHERE tbC.FK_Estabelecimento = ? and tbM.CRM = tbC.FK_Medico AND tbCl.CPF = tbC.FK_Cliente AND Status <> "Cancelado"', req.session.idEstab, function(err, rows, fields) {
     if (!err) res.jsonp(rows);
     else{
       res.send('Ocorreu algum erro')

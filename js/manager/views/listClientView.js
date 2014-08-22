@@ -8,7 +8,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       this.render();
       console.log('Initializing ListClient View');
 
-      //Dom
+    
        //DOM
       this.$CPF = this.$("#CPF");
       this.$Nome = this.$("#Nome");
@@ -38,7 +38,6 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       var modelUpdate = ClientsCollection.get(e.currentTarget.attributes[4].value);
       modelUpdate.set({id: this.$CPF.val(), CPF: this.$CPF.val(), Nome: this.$Nome.val(), Sexo: this.$Sexo.val(), Email: this.$Email.val(), Telefone: this.$Telefone.val()});
       modelUpdate.save({},{url:'manager/paciente/'+ modelUpdate.get('id')});
-      this.render();
       this.$("#edit").modal("hide");
     },
     modalDelete:function(e){
@@ -64,8 +63,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
           $tbody.append('<td><p><button id="btn-delete"  idClient='+model.cid+' class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>');
           $tbody.append('</tr>');
         });  
-    },
-   
+    },   
     render: function (){
       this.$("#edit").modal("hide");
       this.$el.html(this.template);

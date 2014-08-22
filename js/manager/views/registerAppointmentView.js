@@ -42,6 +42,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
       this.$CRM.val("");
       this.$Data.val("");
       this.$Turno.val("");
+      AppointmentsCollection.fetch();
     },
     render: function (){
       this.$el.html(this.template);
