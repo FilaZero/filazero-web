@@ -567,7 +567,7 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
 function addAppointment(req, res){
   console.log(req.body);
   var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno, Presente)  '+
-                               'VALUES (?, ?, ?, ?, ?, ?)',
+                               'VALUES (?, ?, ?, ?, ?, ?, ?)',
                                [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno,"Sim"], function(err) {
     if (!err) res.jsonp("Consulta marcada");
     else{
@@ -666,9 +666,23 @@ function deleteRow (req, res) {
           }); 
     });
   } else if (req.body.Status == "FimFila") {
-        var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows, fields) {});
+        var query = connection.query('DELETE FROM tb_fila WHERE PK_Fila = ?', req.body.PK_Fila, function(err, rows3, fields) {});
         confirmAppointment(req, res);
   }
+  var querySelect = connection.query('SELECT * FROM tb_consulta WHERE PK_Consulta = ?', req.body.PK_Consulta, function (err0,rows0,fields0) {
+    if (!err0) {
+      var queryUpdate = connection.query('UPDATE tb_fila SET QuantidadeAntes = QuantidadeAntes - 1 WHERE FK_Consulta IN (SELECT PK_Consulta FROM tb_consulta tbC WHERE Turno = ? AND Data = ? AND FK_Medico = ? AND FK_Estabelecimento = ?)',
+      [rows0[0]['Turno'], rows0[0]['Data'], rows0[0]['FK_Medico'], rows0[0]['FK_Estabelecimento']], function(err3) {     
+        if (!err3) {
+          console.log("Removido da fila dois");
+        } else {
+          console.log("Erro : " + err3);
+        }
+      });
+    } else {
+      console.log("delete error: " + err0);
+    }
+  });
 }
 
 function getRow (req, res) {
