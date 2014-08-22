@@ -27,6 +27,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/qu
       var modelUpdate = QueuesCollection.get(e.currentTarget.attributes[2].value);
       modelUpdate.set({id: modelUpdate.get("PK_Fila"), Status:"Concluido"});
       modelUpdate.save({},{url:'manager/fila/'});
+      modelUpdate.destroy();
 
     },
     updateReload:function(e){
@@ -43,6 +44,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/qu
       modelUpdate.set({id: modelUpdate.get("PK_Fila"), Status:"Cancelado"});
       console.log(modelUpdate);
       modelUpdate.save({},{url:'manager/fila/'});
+      modelUpdate.destroy();
 
     },    
     setQueues:function($tbody){
