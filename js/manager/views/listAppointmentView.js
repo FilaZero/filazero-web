@@ -50,10 +50,10 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     },
     modalDelete:function(e){
       this.$("#delete").modal();
-      this.$("#btn-confirm").attr('appointmentId',e.currentTarget.attributes[1].value); 
+      this.$("#btn-confirm-cancelar").attr('appointmentId',e.currentTarget.attributes[1].value); 
     },
     deleteConfirm:function(e) {
-      var idForDelete =  this.$("#btn-confirm").attr('appointmentId');
+      var idForDelete =  this.$("#btn-confirm-cancelar").attr('appointmentId');
       var modelDelete = AppointmentsCollection.get(idForDelete);
       modelDelete.set({id: modelDelete.get("PK_Consulta")});
       modelDelete.destroy();
