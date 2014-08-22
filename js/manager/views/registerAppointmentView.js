@@ -13,12 +13,12 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
       this.$CRM = this.$("#CRM");
       this.$Data = this.$("#Data");
       this.$Turno = this.$("#Turno");
-      this.existCPF(this.$PK_Consulta,this.$CPF,this.$CRM,this.$Data,this.$Turno);
+      //this.existCPF(this.$PK_Consulta,this.$CPF,this.$CRM,this.$Data,this.$Turno);
     },
     events: {
       'click #add-appointment' : 'addAppointment'
     },
-    existCPF:function($PK_Consulta,$CPF,$CRM,$Data,$Turno) {
+    /*existCPF:function($PK_Consulta,$CPF,$CRM,$Data,$Turno) {
       $PK_Consulta.blur(function(){ 
         AppointmentsCollection.each(function(model) {
           if(model.get("PK_Consulta") == $PK_Consulta.val()){        
@@ -30,15 +30,14 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/re
         });
       });
       
-    },
+    },*/
     addAppointment: function(e){
-      AppointmentsCollection.create({PK_Consulta: this.$PK_Consulta.val(),
+      AppointmentsCollection.create({
                    CPF: this.$CPF.val(),
                    CRM: this.$CRM.val(),
                    Data: this.$Data.val(),
                    Turno: this.$Turno.val()}); 
       this.$("#modal-delete").modal();
-      this.$PK_Consulta.val("");
       this.$CPF.val("");
       this.$CRM.val("");
       this.$Data.val("");

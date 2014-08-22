@@ -21,17 +21,29 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     events: {
       'click #btn-delete': 'modalDelete',
       'click #btn-confirm': 'deleteConfirm',
-      'click #btn-edit': 'editConfirm',
+      'click #btnConfirm': 'Confirm',
       'click #btn-update': 'updateConfirm',
     },
-    editConfirm:function(e){
-      this.$("#edit").modal();
+    Confirm:function(e){
       var model = AppointmentsCollection.get(e.currentTarget.attributes[1].value);
-      this.$PK_Consulta.val(model.get("PK_Consulta"));
-      this.$CPF.val(model.get("CPF"));
-      this.$CRM.val(model.get("CRM"));      
-      this.$Data.val(model.get("Data"));
-      this.$Turno.val(model.get("Turno"));
+      console.log(model.get("PK_Consulta"));
+      $.ajax({
+        url:"manager/consulta",
+        type:"PUT",
+          data: JSON.stringify({
+          PK_Consulta: model.get("PK_Consulta")
+        }),
+        contentType:"application/json",
+        dataType:"json",
+        statusCode: {
+          403: function() {
+            console.log("ERROR");
+          },
+          200: function(){
+            console.log("OK");
+          }
+          }
+        });
       this.$('#btn-update').attr('idConsulta',e.currentTarget.attributes[1].value);
     },
     updateConfirm:function(e){
@@ -58,8 +70,8 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
           $tbody.append('<td>'+model.get("CRM")+ '</td>');
           $tbody.append('<td>'+model.get("Data")+ '</td>');
           $tbody.append('<td>'+model.get("Turno")+ '</td>');
-          $tbody.append('<td><p><button id="btn-edit" idAppointment='+model.cid+' class="btn btn-primary btn-xs" data-title="Edit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>');
-          $tbody.append('<td><p><button id="btn-delete"  idAppointment='+model.cid+' class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>');
+          $tbody.append('<td><p><button id="btnConfirm" idAppointment='+model.cid+' class="btn btn-success btn-xs" data-title="Confirm"><span class="glyphicon glyphicon-ok"></span></button></p></td>');
+          $tbody.append('<td><p><button id="btnCancelar"  idAppointment='+model.cid+' class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-remove"></span></button></p></td>');
           $tbody.append('</tr>');
         });  
     },
