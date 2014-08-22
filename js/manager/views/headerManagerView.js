@@ -7,10 +7,12 @@ define(['handlebars',
 	'manager/views/listClientView',
 	'manager/views/registerDoctorView',
 	'manager/views/listDoctorView',
+	'manager/views/registerAppointmentView',
+	'manager/views/listAppointmentView',	
 	'bootstrap',
 	'cbpHorizontalSlide',
 	'modernizr']
-,function(Handlebars,$,_,Backbone,HeaderManagerTemplate,queueView,registerClientView,listClientView, registerDoctorView,listDoctorView){
+,function(Handlebars,$,_,Backbone,HeaderManagerTemplate,queueView,registerClientView,listClientView, registerDoctorView,listDoctorView, registerAppointmentView,listAppointmentView){
 	'use strict';
 	var HeaderManagerView = Backbone.View.extend({
 		el:'#header',
@@ -26,7 +28,9 @@ define(['handlebars',
 			'click #list-clients': 'listClients',
 			'click #register-doctors' : 'registerDoctor',
 			'click #add-doctor' : 'addDoctor',
-			'click #list-doctors': 'listDoctors'
+			'click #list-doctors': 'listDoctors',
+			'click #register-appointments' : 'registerAppointments',
+			'click #list-appointments': 'listAppointments'
 		},
 		queue : function(event){
 			new queueView();
@@ -43,6 +47,12 @@ define(['handlebars',
 		listDoctors: function(event) {
 			new listDoctorView();
 		},
+		registerAppointments : function(event){
+			new registerAppointmentView();
+		},
+		listAppointments: function(event) {
+			new listAppointmentView();
+		},		
 		render: function (){
 			this.$el.html(this.template);
 			return this;

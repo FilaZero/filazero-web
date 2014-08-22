@@ -1,0 +1,155 @@
+
+<div  style= "margin-top : 150px" class="container">
+	<div class="row">
+		
+        <div class="col-md-12">
+        <h4>Listar consultas</h4>
+        <div class="table-responsive">
+        
+                
+<table id="mytable" class="table table-bordred table-striped">
+                   
+  <thead align="center">
+    <th style="text-align:center">Paciente</th>
+    <th style="text-align:center">Médico</th>
+    <th style="text-align:center">Data</th>
+    <th style="text-align:center">Turno</th>
+    <th style="text-align:center">Confirmar</th>
+    <th style="text-align:center">Rejeitar</th>
+  </thead>
+  <tbody id = "tbody" align="center"> 
+  </tbody>
+        
+</table>
+
+<div class="clearfix"></div>
+                
+            </div>
+            
+        </div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title custom_align" id="Heading">Editar paciente</h4>
+      </div>
+          <div class="modal-body">
+            <form class="form-horizontal" role="form">
+        <fieldset>
+
+                    <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">CPF</label>
+            <div class="col-sm-10">
+              <input id = "CPF" type="text" placeholder="Cadastro de Pessoa Física" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Nome</label>
+            <div class="col-sm-10">
+              <input id = "Nome" type="text" placeholder="Nome Completo" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Sexo</label>
+            <div class="col-sm-10">
+              <input id = "Sexo" type="text" placeholder="Masculino ou Feminino" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Email</label>
+            <div class="col-sm-10">
+              <input id = "Email" type="email" placeholder="Endereço eletrônico" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label  class="col-sm-2 control-label" for="textinput">Telefone</label>
+            <div class="col-sm-10">
+              <input id = "Telefone" type="text" placeholder="Telefone fixo ou celular" class="form-control">
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+      </div>
+          <div class="modal-footer ">
+        <button id="btn-update" type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Atualizar</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
+    
+    
+    
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title custom_align" id="Heading">Deletar paciente</h4>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Tem certeza de que deseja excluir este paciente?</div>
+       
+      </div>
+        <div class="modal-footer ">
+        <button id="btn-confirm" type="button" class="btn btn-warning" ><span class="glyphicon glyphicon-ok-sign"></span> Sim</button>
+        <button type="button" class="btn btn-warning" ><span class="glyphicon glyphicon-remove"></span> Não</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
+
+
+<div class="modal fade" id="removeSucess" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Cliente removido com sucesso</div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
+
+
+
+<div class="modal fade" id="removeFail" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Desculpa algum erro ocorreu</div>
+       
+      </div>
+        
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+</div>
