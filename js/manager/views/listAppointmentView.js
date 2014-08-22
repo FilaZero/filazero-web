@@ -59,7 +59,8 @@ define(['handlebars',
           }
         });
         this.$("#confirm").modal("hide");
-        QueuesCollection.fetch();
+        QueuesCollection.fetch(); //atualiza a fila
+        AppointmentsCollection.fetch();
     },
     modalCancel:function(e){
       this.$("#cancel").modal();
@@ -80,6 +81,7 @@ define(['handlebars',
           $tbody.append('<td>'+model.get("NomeMedico")+ '</td>');
           $tbody.append('<td>'+model.get("Data")+ '</td>');
           $tbody.append('<td>'+model.get("Turno")+ '</td>');
+          $tbody.append('<td>'+model.get("Status")+ '</td>');
           $tbody.append('<td><p><button id="btnConfirm" appointmentId='+model.cid+' class="btn btn-success btn-xs" data-title="Confirm"><span class="glyphicon glyphicon-ok"></span></button></p></td>');
           $tbody.append('<td><p><button id="btnCancel"  appointmentId='+model.cid+' class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-remove"></span></button></p></td>');
           $tbody.append('</tr>');
