@@ -21,7 +21,7 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     events: {
       'click #btn-delete': 'modalDelete',
       'click #btn-confirm': 'deleteConfirm',
-      'click #btn-edit': 'editConfirm',
+      'click #btn-edit': 'modalConfirm',
       'click #btn-update': 'updateConfirm',
     },
     editConfirm:function(e){
@@ -34,9 +34,13 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
       this.$Turno.val(model.get("Turno"));
       this.$('#btn-update').attr('idConsulta',e.currentTarget.attributes[1].value);
     },
-    updateConfirm:function(e){
+    modalConfirm:function(e){
+      this.$("#confirme").modal();
+      this.$("#btn-update").attr('appointmentId',e.currentTarget.attributes[1].value); 
+    },
+    updateConfirm:function(e){      
       var modelUpdate = AppointmentsCollection.get(e.currentTarget.attributes[4].value);
-      modelUpdate.set({id: this.$PK_Consulta.val(), CPF: this.$CPF.val(), CRM: this.$CRM.val(), Data: this.$Data.val(), Turno: this.$Turno.val()});
+      modelUpdate.set({id: this.$PK_Consulta.val()});
       modelUpdate.save({},{url:'manager/consulta/'+ modelUpdate.get('id')});
       this.$("#edit").modal("hide");
     },
@@ -54,8 +58,8 @@ define(['handlebars','jquery','underscore','backbone','text!manager/templates/li
     setAppointments:function($tbody){
         AppointmentsCollection.each(function(model) {
           $tbody.append('<tr>');
-          $tbody.append('<td>'+model.get("CPF")+ '</td>');
-          $tbody.append('<td>'+model.get("CRM")+ '</td>');
+          $tbody.append('<td>'+model.get("NomeCliente")+ '</td>');
+          $tbody.append('<td>'+model.get("NomeMedico")+ '</td>');
           $tbody.append('<td>'+model.get("Data")+ '</td>');
           $tbody.append('<td>'+model.get("Turno")+ '</td>');
           $tbody.append('<td><p><button id="btn-edit" idAppointment='+model.cid+' class="btn btn-primary btn-xs" data-title="Edit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>');

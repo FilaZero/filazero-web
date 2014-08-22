@@ -4,7 +4,9 @@ define(['underscore','backbone'],function ( _ ,Backbone){
 		defaults: {
 			PK_Consulta:"",
 			CPF:"",
+			NomeCliente:"",
 			CRM:"",
+			NomeMedico: "",
 			Data:"",
 			Turno:""
 		},
