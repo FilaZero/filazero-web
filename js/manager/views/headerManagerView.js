@@ -2,6 +2,7 @@ define(['handlebars',
 	'jquery','underscore',
 	'backbone',
 	'text!manager/templates/headerManager.html',
+	'manager/views/queueView',
 	'manager/views/registerClientView',
 	'manager/views/listClientView',
 	'manager/views/registerDoctorView',
@@ -9,7 +10,7 @@ define(['handlebars',
 	'bootstrap',
 	'cbpHorizontalSlide',
 	'modernizr']
-,function(Handlebars,$,_,Backbone,HeaderManagerTemplate,registerClientView,listClientView, registerDoctorView,listDoctorView){
+,function(Handlebars,$,_,Backbone,HeaderManagerTemplate,queueView,registerClientView,listClientView, registerDoctorView,listDoctorView){
 	'use strict';
 	var HeaderManagerView = Backbone.View.extend({
 		el:'#header',
@@ -19,12 +20,16 @@ define(['handlebars',
 			this.render();
 		},
 		events: {
+			'click #view-queue' : 'queue',			
 			'click #register-clients' : 'registerClient',
 			'click #add-client' : 'addClient',
 			'click #list-clients': 'listClients',
 			'click #register-doctors' : 'registerDoctor',
 			'click #add-doctor' : 'addDoctor',
 			'click #list-doctors': 'listDoctors'
+		},
+		queue : function(event){
+			new queueView();
 		},
 		registerClient : function(event){
 			new registerClientView();
