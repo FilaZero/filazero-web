@@ -567,8 +567,8 @@ var query = connection.query('SELECT * FROM tb_estabelecimento_endereco WHERE FK
 function addAppointment(req, res){
   var query = connection.query('INSERT INTO tb_consulta (FK_Cliente, FK_Estabelecimento, FK_Medico, Status, Data, Turno)  '+
                                'VALUES (?, ?, ?, ?, ?, ?)',
-                               [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno], function(err, rows, fields) {
-    if (!err) res.jsonp(rows[0]);
+                               [req.body.CPF, req.session.idEstab, req.body.CRM, "Aprovado", req.body.Data, req.body.Turno], function(err) {
+    if (!err) res.jsonp("Consulta marcada");
     else{
       res.send(403,'Ocorreu algum erro')
       console.log(err);
@@ -605,9 +605,10 @@ function confirmAppointment(req, res) {
     var date = new Date();
     var current_hour = date.getHours();
     var qtdePacientes;
-    var dateAppointment = connection.query('SELECT * FROM tb_consulta WHERE PK_Consulta = ?', [req.body.PK_Consulta], function(err, rows, fields) {
+    var dateAppointment = connection.query('SELECT * FROM tb_consulta WHERE PK_Consulta = ?', [req.body.PK_Consulta], function(err, rows) {
         if (!err) {
-            var query2 = connection.query('SELECT COUNT(*) AS quantity FROM tb_consulta WHERE Status = "Confirmado" AND Data = ? AND FK_Estabelecimento = ? AND FK_Medico = ? ', [rows[0]['Data'], rows[0]['FK_Estabelecimento'], rows[0]['FK_Medico']], function(err2, rows2, fields) {
+            var query2 = connection.query('SELECT COUNT(*) AS quantity FROM tb_consulta WHERE Status = "Confirmado" AND Data = ? AND FK_Estabelecimento = ? AND FK_Medico = ? ', 
+            	[rows[0]['Data'], rows[0]['FK_Estabelecimento'], rows[0]['FK_Medico']], function(err2, rows2) {
             if (!err2) {
               qtdePacientes = rows2[0]['quantity']; 
             } else {
@@ -627,7 +628,7 @@ function confirmAppointment(req, res) {
           if (!err) {
             var query = connection.query('INSERT INTO tb_fila (FK_Consulta, TempoEstimado, HoraAtualizacao, QuantidadeAntes)  '+
                                        'VALUES (?, ?, ?, ?)',
-                                       [req.body.PK_Consulta, 0, current_hour, qtdePacientes], function(err, rows, fields) {
+                                       [req.body.PK_Consulta, 0, current_hour, qtdePacientes], function(err, rows) {
             if (!err) {
               res.send(200,'Consulta confirmada com sucesso');
               console.log(err);          
